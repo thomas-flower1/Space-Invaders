@@ -17,7 +17,12 @@ var enemyProjectiles = [] # will be used to update the enemy projectiles
 const PROJECTILESPEED = 300
 var shooting = false
 
-const UFO_SPAWN_TIME: int = 25
+
+# ufo
+const UFO_SPAWN_TIME: int = 10
+const UFO = preload("res://scenes/ufo.tscn")
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,6 +61,16 @@ func _process(delta):
 	# if not currently shooting, pick a random enemy to shoot
 	if not shooting:
 		activate_shooting()
+	
+	# checking if a ufo exists
+	
+	var ufo = get_node_or_null('ufo')
+	if ufo:
+		ufo.move_ufo()
+	
+		
+		
+		
 	
 	
 	
@@ -123,5 +138,13 @@ func _on_timer_timeout():
 
 func _on_ufo_timer_timeout():
 	# TODO create an instance of the UFO
-	# TODO restart the timer
-	pass
+	var ufo = UFO.instantiate()
+	ufo.position.x = -256
+	ufo.position.y = -256
+	ufo.name = "ufo"
+	add_child(ufo)
+	
+	var tmp = get_child(3)
+	print(tmp.name)
+	
+	

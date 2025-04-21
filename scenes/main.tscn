@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ccx8w1sbpd7l2"]
+[gd_scene load_steps=12 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_ginls"]
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="2_rmiqm"]
-[ext_resource type="PackedScene" uid="uid://c1y56gnujqct4" path="res://scenes/ufo.tscn" id="3_ea7yb"]
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_xtdec"]
 [ext_resource type="Script" path="res://scripts/score.gd" id="4_cu8dy"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="6_8jw3o"]
@@ -47,9 +46,6 @@ script = ExtResource("1_ginls")
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_rmiqm")
-
-[node name="UFO" parent="GameManager" instance=ExtResource("3_ea7yb")]
-position = Vector2(-216, -240)
 
 [node name="Timer" type="Timer" parent="GameManager"]
 
