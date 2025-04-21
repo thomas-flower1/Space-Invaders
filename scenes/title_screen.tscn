@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cl7xavr71pbwt"]
+
+[ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="1_mghq5"]
+
+[node name="TitleScreen" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 128
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1

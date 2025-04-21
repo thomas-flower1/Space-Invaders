@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://crnp0uqb12j4y"]
+
+[node name="map" type="Area2D"]
+metadata/_edit_vertical_guides_ = [-288.0, 288.0]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(288, -256, 288, 448, 288, -264)

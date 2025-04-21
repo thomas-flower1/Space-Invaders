@@ -1,0 +1,94 @@
+[gd_scene load_steps=11 format=3 uid="uid://ckwdoce02ay54"]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_s28jn"]
+[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="2_x30h7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxa0j"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xme7m"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lofm2"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryhyp"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ain2a"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xflte"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tah42"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxa0j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xme7m")
+}],
+"loop": true,
+"name": &"enemy1",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lofm2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryhyp")
+}],
+"loop": true,
+"name": &"enemy2",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ain2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xflte")
+}],
+"loop": true,
+"name": &"enemy3",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jsen"]
+size = Vector2(32, 32)
+
+[node name="enemy" type="Area2D"]
+scale = Vector2(2, 2)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_s28jn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_tah42")
+animation = &"enemy3"
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+target_position = Vector2(-16, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_2jsen")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(16, 0)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

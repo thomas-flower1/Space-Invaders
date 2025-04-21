@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://bovssfjl8iwvm"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_1xaql"]
+[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_h8elq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sl7v8"]
+atlas = ExtResource("1_h8elq")
+region = Rect2(67, 0, 11, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t4fld"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sl7v8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="player" type="CharacterBody2D"]
+script = ExtResource("1_1xaql")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 8)
+scale = Vector2(3.63636, 3.38333)
+sprite_frames = SubResource("SpriteFrames_t4fld")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -8, -8, 0, -8, 16, -16, 16, -16, 24, 16, 24, 16, 16, 8, 16, 8, 0)
+
+[node name="playerCollision" type="Area2D" parent="."]
+position = Vector2(0, 24)
+collision_mask = 4
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="playerCollision"]
+position = Vector2(0, -24)
+polygon = PackedVector2Array(0, -8, -8, 0, -8, 16, -16, 16, -16, 24, 16, 24, 16, 16, 8, 16, 8, 0)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="playerCollision" to="." method="_on_player_collision_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

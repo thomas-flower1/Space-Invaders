@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cumndowafrghy"]
+
+[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_p32ub"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_djutr"]
+size = Vector2(0.799999, 5.6)
+
+[node name="projectile" type="CharacterBody2D" groups=["projectiles"]]
+scale = Vector2(0.5, 0.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(8, 10)
+texture = ExtResource("1_p32ub")
+region_enabled = true
+region_rect = Rect2(39, 5, 1, 6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.69407e-21, 4)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_djutr")

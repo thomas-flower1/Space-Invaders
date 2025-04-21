@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccx8w1sbpd7l2"]
+
+[ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq0r1"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_pp6x3"]
+a = Vector2(0, -88)
+b = Vector2(0, 128)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_gnhfh"]
+a = Vector2(0, -112)
+b = Vector2(0, 192)
+
+[node name="Main" type="Node2D"]
+metadata/_edit_vertical_guides_ = [-288.0, 288.0]
+metadata/_edit_horizontal_guides_ = [-160.0, -160.0]
+
+[node name="player" parent="." instance=ExtResource("1_65wcy")]
+position = Vector2(0, 96)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="ground" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground"]
+position = Vector2(0, 138)
+shape = SubResource("WorldBoundaryShape2D_sq0r1")
+
+[node name="world_border" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="world_border"]
+position = Vector2(-288, 8)
+shape = SubResource("SegmentShape2D_pp6x3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="world_border"]
+position = Vector2(288, 0)
+shape = SubResource("SegmentShape2D_gnhfh")
