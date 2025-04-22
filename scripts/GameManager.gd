@@ -13,13 +13,14 @@ var score = 0
 
 #enemy vars
 var enemies = []
+var shootingEnemies = []
 var enemyProjectiles = [] # will be used to update the enemy projectiles
 const PROJECTILESPEED = 300
 var shooting = false
 
 
 # ufo
-const UFO_SPAWN_TIME: int = 10
+const UFO_SPAWN_TIME: int = 25
 const UFO = preload("res://scenes/ufo.tscn")
 
 
@@ -54,6 +55,10 @@ func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> v
 		startX += 50
 		add_child(enemy) # adding to the scene tree
 		enemies.append(enemy)
+		
+		# if its a shooting type of enemy, i.e. enemy1 will add to the shooting array
+		if enemyType == 1:
+			shootingEnemies.append(enemy)
 	
 			
 func _process(delta):
@@ -125,8 +130,8 @@ func activate_shooting() -> void:
 	
 	
 func get_random_enemy() -> Area2D:
-	var randomIndex: int = randi_range(0, enemies.size()-1)
-	var enemy = enemies[randomIndex]
+	var randomIndex: int = randi_range(0, shootingEnemies.size()-1)
+	var enemy = shootingEnemies[randomIndex]
 	while not is_instance_valid(enemy):
 		randomIndex = randi_range(0, enemies.size()-1)
 		enemy = enemies[randomIndex]
@@ -137,14 +142,21 @@ func _on_timer_timeout():
 	shooting = false
 
 func _on_ufo_timer_timeout():
-	# TODO create an instance of the UFO
+	
+	# TODO make it so the ufo generate from a random side
+	
+	var directions = [1, -1]
+	var left_or_right = randi_range(0, 1)
+	var direction = directions[left_or_right]
+	
 	var ufo = UFO.instantiate()
-	ufo.position.x = -256
+	ufo.position.x = 256 * direction
 	ufo.position.y = -256
+	ufo.direction = direction
 	ufo.name = "ufo"
 	add_child(ufo)
 	
 	var tmp = get_child(3)
-	print(tmp.name)
+
 	
 	
