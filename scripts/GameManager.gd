@@ -5,6 +5,9 @@ extends Node
 @onready var timer = $Timer # use a timer to get the enemies to shoot
 @onready var scoreLabel = $"../text/score" # to update the player score
 @onready var ufo_timer = $UFO_TIMER # spawn every 25 seconds
+@onready var gameLoopTimer = $GameLoop
+
+
 
 const MINTIME = 0
 const MAXTIME = 3
@@ -18,6 +21,9 @@ var enemyProjectiles = [] # will be used to update the enemy projectiles
 const PROJECTILESPEED = 300
 var shooting = false
 
+var direction = 1
+
+var gameLoopSet = false
 
 # ufo
 const UFO_SPAWN_TIME: int = 25
@@ -66,8 +72,14 @@ func _process(delta):
 	# if not currently shooting, pick a random enemy to shoot
 	if not shooting:
 		activate_shooting()
+		
+	# gameloop
+	if not gameLoopSet:
+		gameLoopSet = true
+		gameLoopTimer.start(1)
+		
 	
-	# checking if a ufo exists
+	
 	
 	var ufo = get_node_or_null('ufo')
 	if ufo:
@@ -81,7 +93,6 @@ func _process(delta):
 	
 	
 	# need to just format it slightly
-	
 	if score == 0:
 		scoreLabel.text = "0000"
 	elif score < 100:
@@ -158,5 +169,41 @@ func _on_ufo_timer_timeout():
 	
 	var tmp = get_child(3)
 
+
+func _on_game_loop_timeout():
+	var tmp = false
+	var node
+	# need to check if any of the enemies are colliding
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			if enemy.colliding_left():
+				direction = 1
+				tmp = true
+				node = enemy.get_node('rayCastLeft')
+				node.enabled = false
+				
+			elif enemy.colliding_right():
+				direction = -1 
+				tmp = true
+				node = enemy.get_node('rayCastRight')
+				node.enabled = false
+
+			
 	
-	
+	if tmp:
+		move_down()
+	else:
+		for enemy in enemies:
+			if is_instance_valid(enemy):
+				enemy.position.x += 10 * direction
+				var left = enemy.get_node('rayCastLeft')
+				var right = enemy.get_node('rayCastRight')
+				left.enabled = true
+				right.enabled = true
+		
+	gameLoopSet = false
+
+func move_down():
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			enemy.position.y += 10

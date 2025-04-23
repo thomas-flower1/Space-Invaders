@@ -51,3 +51,7 @@ func _on_body_entered(projectile: CharacterBody2D):
 	
 	
 	
+
+
+func _on_y_timer_timeout():
+	pass # Replace with function body.

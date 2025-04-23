@@ -68,7 +68,6 @@ size = Vector2(32, 32)
 
 [node name="enemy" type="Area2D"]
 scale = Vector2(2, 2)
-collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_s28jn")
 
@@ -77,18 +76,15 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_tah42")
 animation = &"enemy1"
 
-[node name="RayCast2D2" type="RayCast2D" parent="."]
+[node name="rayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-16, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_2jsen")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="rayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(16, 0)
-
-[node name="Timer" type="Timer" parent="."]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

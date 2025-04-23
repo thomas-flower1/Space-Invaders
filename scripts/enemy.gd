@@ -1,21 +1,21 @@
 extends Area2D
 
-@onready var ray_cast_right = $RayCast2D 
-@onready var ray_cast_left = $RayCast2D2
-
+@onready var ray_cast_right = $rayCastRight
+@onready var ray_cast_left = $rayCastLeft
 @onready var game = get_parent()
 @onready var player = $"../../player/player"
+@onready var x_timer = $x_timer
+@onready var animation = $AnimatedSprite2D
+@onready var y_timer = $y_timer
 
-var type = 1
-var score
-
-
-@onready var timer = $Timer
-var timerSet = false
 
 const PROJECTILE = preload("res://scenes/projectile.tscn")
-var direction = 1
-@onready var animation = $AnimatedSprite2D
+
+var type = 1 # the type of enemy it is
+var score # the score value
+var xTimerSet = false 
+var yTimerSet = false
+
 
 
 func _ready():
@@ -37,32 +37,8 @@ func _on_body_entered(body):
 	game.score += score
 
 
-# on each frame
-func _process(delta):
-	if ray_cast_right.is_colliding():
-		for enemy in game.enemies:
-			if is_instance_valid(enemy):
-				enemy.direction = -1
-				#enemy.position.y += 10
-				
-		
-	
-	if ray_cast_left.is_colliding():
-		for enemy in game.enemies:
-			if is_instance_valid(enemy):
-				enemy.direction = 1
-				#enemy.position.y += 10
-				
-				
-	
-	if not timerSet:
-		timerSet = true
-		timer.start(1)
-		
 
-func _on_timer_timeout():
-	position.x += 10 * direction
-	timerSet = false
+
 	
 	
 
@@ -80,13 +56,9 @@ func shoot():
 
 
 
+func colliding_left() -> bool:
+	return ray_cast_left.is_colliding()
 
-
-
-
-
-	
-	
-
-
-
+func colliding_right() -> bool:
+	return ray_cast_right.is_colliding()
+		
