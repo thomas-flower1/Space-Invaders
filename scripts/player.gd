@@ -88,8 +88,9 @@ func _on_timer_timeout():
 
 func _on_player_collision_body_entered(body):
 	lives.text = str(int(lives.text) - 1)
-	# then we need to remove the projeectile
 	game_manager.enemyProjectiles.erase(body)
 	body.queue_free()
+	
+	game_manager.running = false # make it so that the game is not running
 	
 	
