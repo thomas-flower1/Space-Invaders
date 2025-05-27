@@ -1,14 +1,83 @@
-[gd_scene load_steps=2 format=3 uid="uid://cl7xavr71pbwt"]
+[gd_scene load_steps=3 format=3 uid="uid://cl7xavr71pbwt"]
 
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="1_mghq5"]
+[ext_resource type="Script" path="res://scripts/title_screen.gd" id="1_qsodi"]
 
-[node name="TitleScreen" type="Node2D"]
+[node name="Title Screen" type="Node2D"]
+script = ExtResource("1_qsodi")
 
-[node name="Label" type="Label" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="score3" type="Label" parent="."]
+offset_left = 168.0
+offset_top = -320.0
+offset_right = 224.0
+offset_bottom = -297.0
+scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("1_mghq5")
-theme_override_font_sizes/font_size = 128
-text = "GAME OVER"
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "0000"
+
+[node name="credit" type="Label" parent="."]
+offset_left = 72.0
+offset_top = 360.0
+offset_right = 188.0
+offset_bottom = 383.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mghq5")
+text = "CREDIT 00"
+
+[node name="score" type="Label" parent="."]
+offset_left = -288.0
+offset_top = -320.0
+offset_right = -232.0
+offset_bottom = -297.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 16
+text = "0000"
+
+[node name="play" type="Label" parent="."]
+offset_left = -56.0
+offset_top = -192.0
+offset_right = 56.0
+offset_bottom = -160.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+metadata/_edit_use_anchors_ = true
+
+[node name="space invaders" type="Label" parent="."]
+offset_left = -184.0
+offset_top = -112.0
+offset_right = 188.0
+offset_bottom = -80.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+
+[node name="score table" type="Label" parent="."]
+offset_left = -280.0
+offset_right = 284.0
+offset_bottom = 32.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+
+[node name="camera" type="Camera2D" parent="."]
+
+[node name="title" type="Label" parent="."]
+offset_left = -344.0
+offset_top = -368.0
+offset_right = 156.0
+offset_bottom = -336.0
+scale = Vector2(2, 2)
+tooltip_text = "edef"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 16
+text = "SCORE<1>		 HI-SCORE 		SCORE<2>"
+uppercase = true
+
+[node name="score2" type="Label" parent="."]
+offset_left = -96.0
+offset_top = -320.0
+offset_right = -40.0
+offset_bottom = -297.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mghq5")
+text = "0000"

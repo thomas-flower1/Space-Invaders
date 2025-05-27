@@ -12,7 +12,7 @@ var justShot = false # for the cooldown
 @onready var timer = $Timer
 @onready var tile_map = $"../../TileMap2"
 
-@onready var game_manager = %GameManager
+@onready var gameManager = %GameManager
 
 @onready var lives = $"../../text/lives"
 
@@ -21,13 +21,14 @@ var justShot = false # for the cooldown
 
 # pre defined function
 func _physics_process(delta):
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if gameManager.running:
+		var direction = Input.get_axis("ui_left", "ui_right")
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	move_and_slide()
+		move_and_slide()
 
 
 
@@ -88,9 +89,9 @@ func _on_timer_timeout():
 
 func _on_player_collision_body_entered(body):
 	lives.text = str(int(lives.text) - 1)
-	game_manager.enemyProjectiles.erase(body)
+	gameManager.enemyProjectiles.erase(body)
 	body.queue_free()
 	
-	game_manager.running = false # make it so that the game is not running
+	gameManager.running = false # make it so that the game is not running
 	
 	

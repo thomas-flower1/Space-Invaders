@@ -1,4 +1,8 @@
+class_name GameManager
+
 extends Node
+
+@export var running: bool = true
 
 @onready var enemy = $enemy
 @onready var tile_map = $"../TileMap2" 
@@ -15,9 +19,9 @@ const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 # main game
 var gameLoopSet = false
 var score: int = 0
+var game_state: int = 0
 
 const deathTimoutDuration: int = 5 # the time the game freezes when the player dies
-var running: bool = true
 var deathTimerStarted: bool = false
 
 #shooting
@@ -31,8 +35,8 @@ var shooting = false # check if we are currently 'shooting'
 
 
 # enemies
-var enemies = []
-var direction = 1
+var enemies: Array = []
+var direction: int = 1
 
 
 # ufo
@@ -112,28 +116,8 @@ func _process(delta):
 		format_score()
 		
 		# updating the enemy projectiles
-		if not enemyProjectiles.is_empty():
-			for projectile in enemyProjectiles:
-				projectile.position.y += PROJECTILESPEED * delta
-				
-				
-				
-				
-				var projectileCoord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
-				var otherProjectileCoords: Vector2i = tile_map.local_to_map(Vector2i(projectile.position.x, projectile.position.y + 1))
-				
-			
-				var mapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, projectileCoord) # says if there is something at those coords
-				var otherMapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, otherProjectileCoords)
-				# if the projectile is not at the bottom, delete the cell it collided with
-				if mapCoord != Vector2i(-1, -1) or mapCoord != Vector2i(-1, -1):
-					if not projectile.position.y >= 352:
-
-						tile_map.erase_cell(0, projectileCoord)
-						tile_map.erase_cell(0, otherProjectileCoords)
-					projectile.queue_free()
-					enemyProjectiles.erase(projectile)
-	
+		update_enemy_projectiles(delta)
+		
 	# if the game is not running
 	else:
 		if not deathTimerStarted:
@@ -145,9 +129,9 @@ func _process(delta):
 
 
 func activate_shooting() -> void:
-	var randomEnemy = get_random_enemy()
+	var randomEnemy: Area2D = get_random_enemy()
 	
-	var random_time = randi_range(MINTIME, MAXTIME)
+	var random_time = randi_range(MINTIME, MAXTIME) 
 	randomEnemy.shoot()
 	timer.start(random_time)
 	shooting = true
@@ -155,8 +139,8 @@ func activate_shooting() -> void:
 	
 func get_random_enemy() -> Area2D:
 	var randomIndex: int = randi_range(0, shootingEnemies.size()-1)
-	var enemy = shootingEnemies[randomIndex]
-	while not is_instance_valid(enemy):
+	var enemy: Area2D = shootingEnemies[randomIndex]
+	while not is_instance_valid(enemy): # to ensure the enemy has not been previously freed
 		randomIndex = randi_range(0, enemies.size()-1)
 		enemy = enemies[randomIndex]
 	return enemy
@@ -181,7 +165,6 @@ func _on_ufo_timer_timeout():
 
 
 func _on_game_loop_timeout() -> void:
-	
 	
 	gameLoopSet = false
 	
@@ -216,19 +199,38 @@ func _on_game_loop_timeout() -> void:
 				left.enabled = true
 				right.enabled = true
 	
-	
-
 
 func move_down():
 	for enemy in enemies:
 		if is_instance_valid(enemy):
 			enemy.position.y += 10
 
-
-
-
-
-
 func _on_death_timer_timeout():
 	deathTimerStarted = false
 	running = true
+
+
+func update_enemy_projectiles(delta) -> void:
+	if not enemyProjectiles.is_empty():
+			for projectile in enemyProjectiles:
+				projectile.position.y += PROJECTILESPEED * delta
+				
+				
+				
+				
+				var projectileCoord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
+				var otherProjectileCoords: Vector2i = tile_map.local_to_map(Vector2i(projectile.position.x, projectile.position.y + 1))
+				
+			
+				var mapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, projectileCoord) # says if there is something at those coords
+				var otherMapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, otherProjectileCoords)
+				# if the projectile is not at the bottom, delete the cell it collided with
+				if mapCoord != Vector2i(-1, -1) or mapCoord != Vector2i(-1, -1):
+					if not projectile.position.y >= 352:
+
+						tile_map.erase_cell(0, projectileCoord)
+						tile_map.erase_cell(0, otherProjectileCoords)
+					projectile.queue_free()
+					enemyProjectiles.erase(projectile)
+	
+	
