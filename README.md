@@ -4,7 +4,7 @@ This project is an introduction to learning gdscript and learning the game engin
 
 Some feature of this project include:
 
-- Keeping track of high score
+- Keeping track of your personal high score
 - A title screen and gameover screen
 - Endless gameplay like the original game
 - Animated sprites and sprite collisions
