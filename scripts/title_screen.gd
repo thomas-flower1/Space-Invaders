@@ -4,6 +4,7 @@ extends Node2D
 @onready var space_invaders: Label = $"space invaders"
 @onready var score_table: Label = $"score table"
 
+var speed: float = 0.1
 
 # called when enters the scene tree for the first time
 func _ready():
@@ -21,7 +22,7 @@ func _ready():
 
 
 
-func time_to_wait(text: String, wait_time: float=0.3) -> float:
+func time_to_wait(text: String, wait_time: float=speed) -> float:
 	return len(text) * wait_time + wait_time
 	
 
@@ -40,7 +41,7 @@ func draw_text(text: String, label: Label) -> void:
 	
 	var text_arr: Array = text.split('')
 	for char in text_arr:
-		await get_tree().create_timer(0.3).timeout # wait one second
+		await get_tree().create_timer(speed).timeout # wait one second
 		label.text = label.text + char
 	
 		

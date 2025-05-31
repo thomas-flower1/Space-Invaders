@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ckwdoce02ay54"]
+[gd_scene load_steps=13 format=3 uid="uid://ckwdoce02ay54"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_s28jn"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="2_x30h7"]
@@ -26,6 +26,14 @@ region = Rect2(0, 32, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_xflte"]
 atlas = ExtResource("2_x30h7")
 region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gcumw"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otu2o"]
+atlas = ExtResource("2_x30h7")
+region = Rect2(32, 64, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tah42"]
 animations = [{
@@ -61,6 +69,17 @@ animations = [{
 "loop": true,
 "name": &"enemy3",
 "speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gcumw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otu2o")
+}],
+"loop": true,
+"name": &"explosion",
+"speed": 1.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jsen"]
@@ -74,7 +93,7 @@ script = ExtResource("1_s28jn")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_tah42")
-animation = &"enemy1"
+animation = &"explosion"
 
 [node name="rayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-16, 0)
@@ -86,5 +105,8 @@ shape = SubResource("RectangleShape2D_2jsen")
 [node name="rayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(16, 0)
 
+[node name="death_timer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="death_timer" to="." method="_on_death_timer_timeout"]

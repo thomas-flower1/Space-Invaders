@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 const SPEED = 300.0
-const BULLETSPEED = 300
+
+const BULLETSPEED: int = 1000
 
 var projectiles = []
 var lives: int = 3
@@ -36,7 +37,7 @@ func _physics_process(delta):
 
 
 func _input(event):
-	if event.is_action_pressed("shoot") and not justShot: # if space and we have no cooldown
+	if event.is_action_pressed("shoot") and gameManager.running and not justShot: # if space and we have no cooldown
 		cooldown() # start the cooldown
 		var p = projectile.instantiate() # make a new instance of the projectile scene
 		
@@ -93,7 +94,7 @@ func _on_timer_timeout():
 func _on_player_collision_body_entered(body):
 	lives -= 1
 	lives_label.text = str(lives)
-	gameManager.enemyProjectiles.erase(body)
+	gameManager.enemy_projectiles.erase(body)
 	body.queue_free()
 	
 	gameManager.running = false # make it so that the game is not running

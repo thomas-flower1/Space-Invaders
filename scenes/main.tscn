@@ -142,6 +142,17 @@ scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("3_xtdec")
 text = "CREDIT 00"
 
+[node name="death_label" type="Label" parent="text"]
+visible = false
+offset_left = -128.0
+offset_top = -192.0
+offset_right = 120.0
+offset_bottom = -160.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_xtdec")
+theme_override_font_sizes/font_size = 32
+text = "GAME OVER"
+
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
 [connection signal="timeout" from="GameManager/Timer" to="GameManager" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufoTimer" to="GameManager" method="_on_ufo_timer_timeout"]

@@ -17,6 +17,9 @@ extends Node
 @onready var player = $"../player/player"
 
 
+@onready var death_label = $"../text/death_label"
+
+
 const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 
 # main game
@@ -32,7 +35,7 @@ const PROJECTILESPEED = 300
 const MINTIME: int = 0 # the mintime for an enemy to shoot
 const MAXTIME: int = 3 # the maxtime for an enemy to shoot
 var shooting_enemies: Array = []
-var enemyProjectiles: Array = [] # will be used to update the enemy projectiles
+var enemy_projectiles: Array = [] # will be used to update the enemy projectiles
 var shooting = false # check if we are currently 'shooting'
 
 
@@ -47,10 +50,7 @@ const UFO = preload("res://scenes/ufo.tscn")
 
 
 # TODO speed up the game
-# TODO reset the screen once all enemies are killed
-# TODO check bug with player projectiles that stop moving
-# TODO expolsion animation
-# TODO speed up player prokectile, change the player sprite also
+# TODO speed up player projectile, change the player sprite also
 
 
 
@@ -110,7 +110,13 @@ func format_score() -> void:
 func _process(delta):
 	
 	if player.lives == 0:
-		print('ok')
+		running = false
+		death_label.visible = true
+		
+		# TODO add gameover and swap back to title screen
+		# TODO pause running again
+		
+		pass
 	
 	if enemies.is_empty():
 		GlobleVars.score = score
@@ -155,10 +161,10 @@ func _process(delta):
 
 
 func activate_shooting() -> void:
-	var randomEnemy: Area2D = get_random_enemy()
+	var random_enemy: Area2D = get_random_enemy()
 	
 	var random_time = randi_range(MINTIME, MAXTIME) 
-	randomEnemy.shoot()
+	random_enemy.shoot()
 	timer.start(random_time)
 	shooting = true
 	
@@ -238,8 +244,8 @@ func _on_death_timer_timeout():
 
 
 func update_enemy_projectiles(delta) -> void:
-	if not enemyProjectiles.is_empty():
-			for projectile in enemyProjectiles:
+	if not enemy_projectiles.is_empty():
+			for projectile in enemy_projectiles:
 				projectile.position.y += PROJECTILESPEED * delta
 				
 				
@@ -258,6 +264,6 @@ func update_enemy_projectiles(delta) -> void:
 						tile_map.erase_cell(0, projectileCoord)
 						tile_map.erase_cell(0, otherProjectileCoords)
 					projectile.queue_free()
-					enemyProjectiles.erase(projectile)
+					enemy_projectiles.erase(projectile)
 	
 	
