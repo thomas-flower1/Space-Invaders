@@ -33,8 +33,6 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	'''
 	var death_delay: float = 0.1
 	animation.play("explosion")
-	
-	player.projectiles.erase(projectile)
 	projectile.queue_free()
 	
 	death_timer.start(death_delay) # start a timer before deleting the enemy

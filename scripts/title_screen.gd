@@ -27,7 +27,7 @@ func time_to_wait(text: String, wait_time: float=speed) -> float:
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_pressed("shoot"): # will only swap scenes if the space bar is pressed
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 	
@@ -40,9 +40,9 @@ func draw_text(text: String, label: Label) -> void:
 	'''
 	
 	var text_arr: Array = text.split('')
-	for char in text_arr:
+	for c in text_arr:
 		await get_tree().create_timer(speed).timeout # wait one second
-		label.text = label.text + char
+		label.text = label.text + c
 	
 		
 	
