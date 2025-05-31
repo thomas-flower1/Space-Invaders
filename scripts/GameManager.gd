@@ -14,6 +14,9 @@ extends Node
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
 
+@onready var player = $"../player/player"
+
+
 const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 
 # main game
@@ -43,6 +46,14 @@ const UFO_SPAWN_TIME: int = 25
 const UFO = preload("res://scenes/ufo.tscn")
 
 
+# TODO speed up the game
+# TODO reset the screen once all enemies are killed
+# TODO check bug with player projectiles that stop moving
+# TODO expolsion animation
+# TODO speed up player prokectile, change the player sprite also
+
+
+
 
 func _ready() -> void:
 	'''
@@ -60,10 +71,11 @@ func _ready() -> void:
 	create_enemy_row(xpos, ypos + 200, 3, 10)
 	
 	ufoTimer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
+	score = GlobleVars.score # loading the score back from prev rounds
 	
 	
 func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> void:
-	for i in 11:
+	for i in 11: 
 		var enemy: Area2D = ENEMY.instantiate() # creating a new instance of the scene
 		
 		# initializing the coords and type
@@ -94,8 +106,17 @@ func format_score() -> void:
 		scoreLabel.text = str(score)
 	
 	
-# main gameloop
+# main game loop
 func _process(delta):
+	
+	if player.lives == 0:
+		print('ok')
+	
+	if enemies.is_empty():
+		GlobleVars.score = score
+		
+		get_tree().change_scene_to_file("res://scenes/main.tscn")
+		
 	if running:
 		# if not currently shooting, pick a random enemy to shoot
 		if not shooting:
@@ -122,6 +143,12 @@ func _process(delta):
 		if not deathTimerStarted:
 			deathTimerStarted = true
 			deathTimer.start(deathTimoutDuration)
+	
+	
+	# if all the enemies are dead
+	
+
+		
 		
 		
 		

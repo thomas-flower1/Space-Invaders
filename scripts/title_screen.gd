@@ -27,7 +27,7 @@ func time_to_wait(text: String, wait_time: float=0.3) -> float:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_anything_pressed(): # will change to the main scene
+	if Input.is_action_pressed("shoot"): # will only swap scenes if the space bar is pressed
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 	
 

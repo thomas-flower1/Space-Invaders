@@ -38,6 +38,7 @@ func _on_body_entered(body) -> void:
 	body.queue_free() # remove the projectile from the scene tree
 
 	queue_free() # remove this enemy from the scene tree and delete
+	game_manager.enemies.erase(self) # remove the enemy from the array
 	game_manager.score += score # update the score
 	
 	# also need to check if the enemy is a shooting enemy, if so need to remove from the shooting array

@@ -4,6 +4,7 @@ const SPEED = 300.0
 const BULLETSPEED = 300
 
 var projectiles = []
+var lives: int = 3
 
 
 var justShot = false # for the cooldown
@@ -14,9 +15,11 @@ var justShot = false # for the cooldown
 
 @onready var gameManager = %GameManager
 
-@onready var lives = $"../../text/lives"
+@onready var lives_label = $"../../text/lives"
 
 
+
+# TODO stop the player from shooting once just shot
 
 
 # pre defined function
@@ -88,10 +91,12 @@ func _on_timer_timeout():
 
 
 func _on_player_collision_body_entered(body):
-	lives.text = str(int(lives.text) - 1)
+	lives -= 1
+	lives_label.text = str(lives)
 	gameManager.enemyProjectiles.erase(body)
 	body.queue_free()
 	
 	gameManager.running = false # make it so that the game is not running
+	
 	
 	
