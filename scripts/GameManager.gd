@@ -28,10 +28,9 @@ var deathTimerStarted: bool = false
 const PROJECTILESPEED = 300
 const MINTIME: int = 0 # the mintime for an enemy to shoot
 const MAXTIME: int = 3 # the maxtime for an enemy to shoot
-var shootingEnemies: Array = []
+var shooting_enemies: Array = []
 var enemyProjectiles: Array = [] # will be used to update the enemy projectiles
 var shooting = false # check if we are currently 'shooting'
-
 
 
 # enemies
@@ -54,7 +53,7 @@ func _ready() -> void:
 	'''
 	var xpos = -232
 	var ypos = -192
-	create_enemy_row(xpos, ypos, 1, 30)
+	create_enemy_row(xpos, ypos, 1, 30) # type 1 is a shooting enemy
 	create_enemy_row(xpos, ypos + 50, 2, 20)
 	create_enemy_row(xpos, ypos + 100, 2, 20)
 	create_enemy_row(xpos, ypos + 150, 3, 10)
@@ -79,7 +78,7 @@ func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> v
 		
 		# if its a shooting type of enemy, i.e. enemy1 will add to the shooting array
 		if enemyType == 1:
-			shootingEnemies.append(enemy)
+			shooting_enemies.append(enemy)
 		
 		startX += 50 # increment the x coord for the next enemy
 	
@@ -136,13 +135,14 @@ func activate_shooting() -> void:
 	timer.start(random_time)
 	shooting = true
 	
-	
+
+#TODO FIX ENEMY SHOOTING
 func get_random_enemy() -> Area2D:
-	var randomIndex: int = randi_range(0, shootingEnemies.size()-1)
-	var enemy: Area2D = shootingEnemies[randomIndex]
+	var random_index: int = randi_range(0, shooting_enemies.size()-1)
+	var enemy: Area2D = shooting_enemies[random_index]
 	while not is_instance_valid(enemy): # to ensure the enemy has not been previously freed
-		randomIndex = randi_range(0, enemies.size()-1)
-		enemy = enemies[randomIndex]
+		random_index = randi_range(0, shooting_enemies.size()-1)
+		enemy = shooting_enemies[random_index]
 	return enemy
 		
 	

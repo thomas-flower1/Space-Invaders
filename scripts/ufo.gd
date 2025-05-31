@@ -47,11 +47,3 @@ func _on_body_entered(projectile: CharacterBody2D):
 	player.projectiles.erase(projectile) # removing from the array
 	game_manager.score += generate_score()
 
-	
-	
-	
-	
-
-
-func _on_y_timer_timeout():
-	pass # Replace with function body.

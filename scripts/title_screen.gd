@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var play_label: Label = $play
 @onready var space_invaders: Label = $"space invaders"
-@onready var score_table = $"score table"
+@onready var score_table: Label = $"score table"
 
 
 # called when enters the scene tree for the first time
