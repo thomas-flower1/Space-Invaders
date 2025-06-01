@@ -45,7 +45,7 @@ var direction: int = 1
 
 
 # ufo
-const UFO_SPAWN_TIME: int = 25
+const UFO_SPAWN_TIME: int = 23
 const UFO = preload("res://scenes/ufo.tscn")
 
 
@@ -62,6 +62,8 @@ func _ready() -> void:
 	initializes all the enemies for the first time
 	
 	'''
+	
+	# TODO add the animation when initializing everything
 	var xpos = -232
 	var ypos = -192
 	create_enemy_row(xpos, ypos, 1, 30) # type 1 is a shooting enemy
@@ -189,7 +191,7 @@ func _on_ufo_timer_timeout():
 	
 	var ufo = UFO.instantiate()
 	ufo.position.x = 256 * direction
-	ufo.position.y = -256
+	ufo.position.y = -242
 	ufo.direction = direction
 	ufo.name = "ufo"
 	add_child(ufo)

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_groeq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fbnjo"]
-size = Vector2(32, 18)
+size = Vector2(32, 16)
 
 [node name="UFO" type="Area2D"]
 scale = Vector2(2, 2)
@@ -21,7 +21,6 @@ region_enabled = true
 region_rect = Rect2(47, 3, 18, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_fbnjo")
 
 [node name="Timer" type="Timer" parent="."]

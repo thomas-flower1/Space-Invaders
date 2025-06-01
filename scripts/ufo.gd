@@ -1,7 +1,6 @@
 extends Area2D
 
 @onready var game_manager = get_parent()
-
 @onready var ufo_timer = game_manager.get_child(1)
 @onready var ray_cast_left = $RayCastLeft
 @onready var ray_cast_right = $RayCastRight
@@ -15,6 +14,8 @@ var score
 var direction = 1
 
 
+
+# TODO fix the ufo
 func generate_score() -> int:
 	var SCORES = [100, 150, 200, 250, 300]
 	var index = randi_range(0, SCORES.size()-1)
@@ -42,8 +43,9 @@ func _on_timer_timeout():
 
 
 func _on_body_entered(projectile: CharacterBody2D):
+	print('ok')
 	queue_free() # removing the ufo
 	projectile.queue_free() # removing from the scene tree
-	player.projectiles.erase(projectile) # removing from the array
+	player.projectile = null # removing from the array
 	game_manager.score += generate_score()
 

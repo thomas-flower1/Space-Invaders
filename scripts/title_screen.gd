@@ -19,6 +19,8 @@ func _ready():
 	await get_tree().create_timer(delay).timeout # setting a timeout before the next text
 
 	score_table.text = "*SCORE ADVANCE TABLE*" # just draw the whole text at once
+	
+	# TODO add score table 
 
 
 

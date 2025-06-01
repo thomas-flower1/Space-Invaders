@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ccx8w1sbpd7l2"]
+[gd_scene load_steps=15 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_ginls"]
@@ -6,6 +6,28 @@
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_xtdec"]
 [ext_resource type="Script" path="res://scripts/score.gd" id="4_cu8dy"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="6_8jw3o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucrvo"]
+atlas = ExtResource("6_8jw3o")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6cjw"]
+atlas = ExtResource("6_8jw3o")
+region = Rect2(32, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mc3ii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucrvo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6cjw")
+}],
+"loop": true,
+"name": &"explosion",
+"speed": 5.0
+}]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq0r1"]
 distance = -22.0
@@ -63,6 +85,14 @@ one_shot = true
 
 [node name="player" parent="player" instance=ExtResource("1_65wcy")]
 position = Vector2(0, 240)
+
+[node name="explosion" type="AnimatedSprite2D" parent="player"]
+visible = false
+position = Vector2(0, -256)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_mc3ii")
+animation = &"explosion"
+autoplay = "explosion"
 
 [node name="world" type="Node" parent="."]
 
