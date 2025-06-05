@@ -43,9 +43,7 @@ func _on_timer_timeout():
 
 
 func _on_body_entered(projectile: CharacterBody2D):
-	print('ok')
 	queue_free() # removing the ufo
 	projectile.queue_free() # removing from the scene tree
 	player.projectile = null # removing from the array
 	game_manager.score += generate_score()
-

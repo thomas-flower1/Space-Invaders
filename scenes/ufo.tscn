@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1y56gnujqct4"]
 
-[ext_resource type="Script" path="res://scripts/ufo.gd" id="1_5romk"]
+[ext_resource type="Script" uid="uid://dc7gxbyck7js0" path="res://scripts/ufo.gd" id="1_5romk"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_groeq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fbnjo"]

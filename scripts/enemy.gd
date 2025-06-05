@@ -80,5 +80,3 @@ func colliding_left() -> bool:
 func colliding_right() -> bool:
 	return ray_cast_right.is_colliding()
 		
-
-

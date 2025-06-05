@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_ginls"]
-[ext_resource type="Script" path="res://scripts/GameManager.gd" id="2_rmiqm"]
+[ext_resource type="Script" uid="uid://c80aq7xuykjrl" path="res://scripts/main.gd" id="1_ginls"]
+[ext_resource type="Script" uid="uid://dvrm7wbf8fbs7" path="res://scripts/GameManager.gd" id="2_rmiqm"]
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_xtdec"]
-[ext_resource type="Script" path="res://scripts/score.gd" id="4_cu8dy"]
+[ext_resource type="Script" uid="uid://ogaelv1j6x7o" path="res://scripts/score.gd" id="4_cu8dy"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="6_8jw3o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ucrvo"]
@@ -44,16 +44,10 @@ b = Vector2(0, 408)
 texture = ExtResource("6_8jw3o")
 texture_region_size = Vector2i(4, 4)
 4:2/0 = 0
-4:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-4:2/0/physics_layer_0/angular_velocity = 0.0
 4:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 28:21/0 = 0
-28:21/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-28:21/0/physics_layer_0/angular_velocity = 0.0
 28:21/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 14:10/0 = 0
-14:10/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-14:10/0/physics_layer_0/angular_velocity = 0.0
 14:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -2, 2, -2, 2, 2, -2, 2)
 
 [sub_resource type="TileSet" id="TileSet_usg7h"]

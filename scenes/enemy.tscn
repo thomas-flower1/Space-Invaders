@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://ckwdoce02ay54"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_s28jn"]
+[ext_resource type="Script" uid="uid://cgk4xeyfmk6g4" path="res://scripts/enemy.gd" id="1_s28jn"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="2_x30h7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nxa0j"]

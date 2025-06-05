@@ -48,5 +48,3 @@ func draw_text(text: String, label: Label) -> void:
 	
 		
 	
-
-

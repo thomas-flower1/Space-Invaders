@@ -51,6 +51,8 @@ const UFO = preload("res://scenes/ufo.tscn")
 
 # TODO speed up the game
 # TODO speed up player projectile, change the player sprite also
+# TODO update death screen
+# TODO Start animation
 
 
 
