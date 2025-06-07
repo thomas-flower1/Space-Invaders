@@ -14,6 +14,14 @@ Some feature of this project include:
 
   <br>
   
-### Preview:
+### Title Screen Preview:
 
-![Screenshot 2025-05-31 213443](https://github.com/user-attachments/assets/79a8ab93-cd46-481c-8386-7cca24c00a10)
+![Space invaders title screen - Made with Clipchamp](https://github.com/user-attachments/assets/aebe244b-d2e4-45c6-ab69-97498abb9f62)
+
+
+### Gameplay Preview
+
+
+
+
+
