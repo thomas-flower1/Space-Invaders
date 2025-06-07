@@ -10,12 +10,23 @@ extends CharacterBody2D
 
 
 const SPEED: int = 300
-const BULLETSPEED: int = 950
+const BULLETSPEED: int = 950 #950
 
 
 var projectile: CharacterBody2D = null
 var lives: int = 3
 var explosion_animation_time: float = 0.3
+
+
+# TODO make multiple destroy patterns
+var destroy_pattern: Array = [
+	[0, 1, 1, 0, 1],
+	[1, 1, 1, 0, 1],
+	[1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1],
+	[0, 1, 0, 0, 1], 
+]
+
 
 
 # pre defined function
@@ -42,21 +53,32 @@ func _input(event):
 # each frame
 func _process(delta):
 	
-	# for every projectile in the projectiles, update the pos
+	# if a projectile exists
 	if is_instance_valid(projectile) and projectile:
 		projectile.position.y -= BULLETSPEED * delta 
 		
-		var projectileCoord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
-		var otherProjectileCoords: Vector2i = tile_map.local_to_map(Vector2i(projectile.position.x, projectile.position.y + 1))
-		var mapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, projectileCoord) # getting the coord in the tilemap of where the projectile is
-		var otherMapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, otherProjectileCoords)
 		
-		if mapCoord != Vector2i(-1, -1) or mapCoord != Vector2i(-1, -1):
-			# TODO do an explosion to remove mutliple cells
+		var projectile_coord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
+		var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, projectile_coord) # will return either a valid or invalid tile
+		
+		if map_coord != Vector2i(-1, -1): 
+			# TODO add an explostion animation
+			
+	
+			var start_vector: Vector2i = projectile_coord - Vector2i(1, -1)
+			var y = start_vector.y
+			
+			for row in destroy_pattern:
+				var x = start_vector.x
+				for col in row:
+					if col == 1:
+						tile_map.erase_cell(0, Vector2i(x, y))
+					
+					x += 1
+				y -=1
 			
 			
-			tile_map.erase_cell(0, projectileCoord)
-			tile_map.erase_cell(0, otherProjectileCoords)
+			#tile_map.erase_cell(0, projectile_coord);
 			main.remove_child(projectile) # if there is a tile there remove the projectile
 			projectile = null 
 
@@ -79,7 +101,5 @@ func _on_player_collision_body_entered(body):
 	
 	
 	
-
-
 func _on_explosion_timer_timeout():
 	explosion.visible = false
