@@ -4,6 +4,20 @@ extends Node2D
 @onready var space_invaders: Label = $"space invaders"
 @onready var score_table: Label = $"score table"
 
+# for the score label
+@onready var mystery: Label = $scores/mystery
+@onready var squid_points: Label = $"scores/squid points"
+@onready var crab_points: Label = $"scores/crab points"
+@onready var octo_points: Label = $"scores/octo points"
+
+
+# images
+@onready var ufo: Sprite2D = $sprites/UFO
+@onready var squid: Sprite2D = $sprites/squid
+@onready var crab: Sprite2D = $sprites/crab
+@onready var octo: Sprite2D = $sprites/octo
+
+
 var speed: float = 0.1
 
 # called when enters the scene tree for the first time
@@ -19,8 +33,31 @@ func _ready():
 	await get_tree().create_timer(delay).timeout # setting a timeout before the next text
 
 	score_table.text = "*SCORE ADVANCE TABLE*" # just draw the whole text at once
+	delay += time_to_wait("*SCORE ADVANCE TABLE*") - 4
+	await get_tree().create_timer(delay).timeout
 	
 	# TODO add score table 
+	ufo.visible = true
+	draw_text("=? MYSTERY", mystery)
+	delay += time_to_wait("=? MYSTERY") 
+	await get_tree().create_timer(delay).timeout 
+	
+	squid.visible = true
+	draw_text("=30  POINTS", squid_points)
+	delay += time_to_wait("=30  POINTS") - 1
+	await get_tree().create_timer(delay).timeout 
+	
+	
+	crab.visible = true
+	draw_text("=20  POINTS", crab_points)
+	delay += time_to_wait("=20  POINTS") - 1
+	await get_tree().create_timer(delay).timeout 
+	
+	octo.visible = true
+	draw_text("=10  POINTS", octo_points)
+
+	
+	
 
 
 
@@ -43,7 +80,8 @@ func draw_text(text: String, label: Label) -> void:
 	
 	var text_arr: Array = text.split('')
 	for c in text_arr:
-		await get_tree().create_timer(speed).timeout # wait one second
+		if !c == " ":
+			await get_tree().create_timer(speed).timeout # wait one second
 		label.text = label.text + c
 	
 		

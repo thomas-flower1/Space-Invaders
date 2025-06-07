@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cl7xavr71pbwt"]
+[gd_scene load_steps=4 format=3 uid="uid://cl7xavr71pbwt"]
 
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="1_mghq5"]
 [ext_resource type="Script" uid="uid://tagyxy3tffd1" path="res://scripts/title_screen.gd" id="1_qsodi"]
+[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="3_s4lrb"]
 
 [node name="Title Screen" type="Node2D"]
 script = ExtResource("1_qsodi")
@@ -81,3 +82,71 @@ offset_bottom = -297.0
 scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("1_mghq5")
 text = "0000"
+
+[node name="sprites" type="Node" parent="."]
+
+[node name="octo" type="Sprite2D" parent="sprites"]
+visible = false
+position = Vector2(-112, 264)
+scale = Vector2(3, 3)
+texture = ExtResource("3_s4lrb")
+region_enabled = true
+region_rect = Rect2(19, 36, 11, 8)
+
+[node name="squid" type="Sprite2D" parent="sprites"]
+visible = false
+position = Vector2(-112, 144)
+scale = Vector2(3.5, 3.5)
+texture = ExtResource("3_s4lrb")
+region_enabled = true
+region_rect = Rect2(4, 20, 8, 8)
+
+[node name="crab" type="Sprite2D" parent="sprites"]
+visible = false
+position = Vector2(-112, 208)
+scale = Vector2(3, 3)
+texture = ExtResource("3_s4lrb")
+region_enabled = true
+region_rect = Rect2(3, 4, 11, 8)
+
+[node name="UFO" type="Sprite2D" parent="sprites"]
+visible = false
+position = Vector2(-112, 74.5)
+scale = Vector2(3, 3)
+texture = ExtResource("3_s4lrb")
+region_enabled = true
+region_rect = Rect2(48, 5, 16, 7)
+
+[node name="scores" type="Node" parent="."]
+
+[node name="squid points" type="Label" parent="scores"]
+offset_left = -88.0
+offset_top = 128.0
+offset_right = 184.0
+offset_bottom = 160.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+
+[node name="mystery" type="Label" parent="scores"]
+offset_left = -88.0
+offset_top = 64.0
+offset_right = 184.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+
+[node name="crab points" type="Label" parent="scores"]
+offset_left = -88.0
+offset_top = 192.0
+offset_right = 184.0
+offset_bottom = 224.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+
+[node name="octo points" type="Label" parent="scores"]
+offset_left = -88.0
+offset_top = 248.0
+offset_right = 184.0
+offset_bottom = 280.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32

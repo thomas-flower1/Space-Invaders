@@ -19,14 +19,39 @@ var explosion_animation_time: float = 0.3
 
 
 # TODO make multiple destroy patterns
-var destroy_pattern: Array = [
-	[0, 1, 1, 0, 1],
-	[1, 1, 1, 0, 1],
-	[1, 1, 1, 1, 0],
-	[0, 1, 1, 1, 1],
-	[0, 1, 0, 0, 1], 
-]
 
+func get_destroy_pattern() -> Array:
+	
+	var destroy_patterns = [
+		[
+		[0, 1, 1, 0, 1],
+		[1, 1, 1, 0, 1],
+		[1, 1, 1, 1, 0],
+		[0, 1, 1, 1, 1],
+		[0, 1, 0, 0, 1], 
+		], 
+		
+		[
+			[1, 0, 0, 0, 1],
+			[1, 1, 1, 1, 1],
+			[0, 1, 1, 1, 0],
+			[0, 1, 0, 1, 0],
+			[1, 1, 0, 0, 1], 
+		], [
+		
+			[0, 1, 0, 1, 0],
+			[1, 1, 1, 1, 1],
+			[0, 1, 1, 1, 0],
+			[1, 1, 1, 1, 1],
+			[0, 1, 0, 1, 0], 
+			]
+		
+		]
+	
+	var random_index = randi_range(0, destroy_patterns.size()-1)
+	
+	return destroy_patterns[random_index]
+	
 
 
 # pre defined function
@@ -67,6 +92,8 @@ func _process(delta):
 	
 			var start_vector: Vector2i = projectile_coord - Vector2i(1, -1)
 			var y = start_vector.y
+			
+			var destroy_pattern = get_destroy_pattern();
 			
 			for row in destroy_pattern:
 				var x = start_vector.x
