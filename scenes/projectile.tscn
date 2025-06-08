@@ -11,13 +11,14 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(8, 10)
+position = Vector2(0, -15)
+scale = Vector2(8, 5)
 texture = ExtResource("1_p32ub")
 region_enabled = true
 region_rect = Rect2(39, 5, 1, 6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visibility_layer = 2
-position = Vector2(0, 1.19209e-07)
+position = Vector2(0, -16)
 scale = Vector2(10, 10)
 shape = SubResource("RectangleShape2D_djutr")

@@ -6,13 +6,22 @@ extends Node
 
 @onready var enemy = $enemy
 @onready var tile_map = $"../TileMap2" 
+
+# LABELS
 @onready var scoreLabel = $"../text/score" # to update the player score
+@onready var ufo_score: Label = $"../text/ufo score"
 
 
+
+# TIMERS
 @onready var timer = $Timer # use a timer to get the enemies to shoot
 @onready var ufoTimer = $ufoTimer # spawn every 25 seconds
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
+@onready var ufo_score_timer: Timer = $"ufo score timer"
+
+
+
 
 @onready var player = $"../player/player"
 
@@ -271,3 +280,7 @@ func update_enemy_projectiles(delta) -> void:
 					enemy_projectiles.erase(projectile)
 	
 	
+
+
+func _on_ufo_score_timer_timeout() -> void:
+	ufo_score.visible = false

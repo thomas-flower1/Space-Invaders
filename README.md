@@ -20,8 +20,3 @@ Some feature of this project include:
 
 
 ### Gameplay Preview
-
-
-
-
-
