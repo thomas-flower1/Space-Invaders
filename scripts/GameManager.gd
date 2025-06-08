@@ -2,7 +2,9 @@ class_name GameManager
 
 extends Node
 
-@export var running: bool = true
+@export var running: bool = false # false until we spawn all the enemies
+
+
 
 @onready var enemy = $enemy
 @onready var tile_map = $"../TileMap2" 
@@ -19,6 +21,9 @@ extends Node
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
 @onready var ufo_score_timer: Timer = $"ufo score timer"
+@onready var enemy_row_timer: Timer = $enemyRowTimer
+@onready var start_timer: Timer = $startTimer # time to wait before setting running to true
+
 
 
 
@@ -28,19 +33,18 @@ extends Node
 
 @onready var death_label = $"../text/death_label"
 
-
+# SCENES
 const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 
 # main game
 var gameLoopSet = false
 var score: int = 0
-var game_state: int = 0
 
 const deathTimoutDuration: int = 5 # the time the game freezes when the player dies
 var deathTimerStarted: bool = false
 
 #shooting
-const PROJECTILESPEED = 300
+const PROJECTILESPEED: int = 950
 const MINTIME: int = 0 # the mintime for an enemy to shoot
 const MAXTIME: int = 3 # the maxtime for an enemy to shoot
 var shooting_enemies: Array = []
@@ -61,33 +65,57 @@ const UFO = preload("res://scenes/ufo.tscn")
 # TODO speed up the game
 # TODO speed up player projectile, change the player sprite also
 # TODO update death screen
-# TODO Start animation
+# TODO change the score so that it is always getting from the global scope
+# TODO move player projectile into game manager
 
 
-
-
+# when the node enters the scene tree for the first time
 func _ready() -> void:
 	'''
 	function that is called when the game manager enters the scene tree for the first time
 	
-	initializes all the enemies for the first time
+	initializes all the enemies for the first time with their score and unique animations
+	
+	Plays the animation to spawn everything in
 	
 	'''
+	
+	const number_of_enemies_per_row: int = 11
+	const spawn_interval: float = 0.05
+	var time_to_wait: float = 0
+	
 	
 	# TODO add the animation when initializing everything
 	var xpos = -232
 	var ypos = -192
-	create_enemy_row(xpos, ypos, 1, 30) # type 1 is a shooting enemy
-	create_enemy_row(xpos, ypos + 50, 2, 20)
-	create_enemy_row(xpos, ypos + 100, 2, 20)
-	create_enemy_row(xpos, ypos + 150, 3, 10)
-	create_enemy_row(xpos, ypos + 200, 3, 10)
+	create_enemy_row(xpos, ypos, 1, 30, spawn_interval) # type 1 is a shooting enemy
+	time_to_wait += number_of_enemies_per_row * spawn_interval 
+	await get_tree().create_timer(time_to_wait).timeout
 	
+	create_enemy_row(xpos, ypos + 50, 2, 20, spawn_interval)
+	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	await get_tree().create_timer(time_to_wait).timeout
+
+	
+	create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
+	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	await get_tree().create_timer(time_to_wait).timeout
+
+	
+	create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
+	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	await get_tree().create_timer(time_to_wait).timeout
+	
+	create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
+
+	
+	
+	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufoTimer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
 	score = GlobleVars.score # loading the score back from prev rounds
 	
 	
-func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> void:
+func create_enemy_row(startX: int, startY: int, enemyType: int, score: int, spawn_interval: float) -> void:
 	for i in 11: 
 		var enemy: Area2D = ENEMY.instantiate() # creating a new instance of the scene
 		
@@ -96,6 +124,8 @@ func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> v
 		enemy.position.y = startY
 		enemy.type = enemyType
 		enemy.score = score
+		
+		var animation_node = enemy.get_node("animation")
 		
 		
 		add_child(enemy) # adding to the scene tree
@@ -106,6 +136,23 @@ func create_enemy_row(startX: int, startY: int, enemyType: int, score: int) -> v
 			shooting_enemies.append(enemy)
 		
 		startX += 50 # increment the x coord for the next enemy
+		await get_tree().create_timer(spawn_interval).timeout
+		
+	
+
+	
+	
+	
+func _on_start_timer_timeout() -> void:
+	for enemy in enemies:
+
+		var animation_node = enemy.get_node("animation")
+		animation_node.play()
+	running = true
+	
+	
+	
+	
 	
 
 func format_score() -> void:
@@ -259,23 +306,41 @@ func _on_death_timer_timeout():
 func update_enemy_projectiles(delta) -> void:
 	if not enemy_projectiles.is_empty():
 			for projectile in enemy_projectiles:
+				
+				# TODO turn this into a function
 				projectile.position.y += PROJECTILESPEED * delta
 				
 				
+				var projectile_coord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
+				var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, projectile_coord) # will return either a valid or invalid tile
 				
-				
-				var projectileCoord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
-				var otherProjectileCoords: Vector2i = tile_map.local_to_map(Vector2i(projectile.position.x, projectile.position.y + 1))
-				
+				if map_coord != Vector2i(-1, -1): 
+					# TODO add an explostion animation
+					
 			
-				var mapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, projectileCoord) # says if there is something at those coords
-				var otherMapCoord: Vector2i = tile_map.get_cell_atlas_coords(0, otherProjectileCoords)
-				# if the projectile is not at the bottom, delete the cell it collided with
-				if mapCoord != Vector2i(-1, -1) or mapCoord != Vector2i(-1, -1):
-					if not projectile.position.y >= 352:
+					var start_vector: Vector2i = projectile_coord - Vector2i(1, -1)
+					var y = start_vector.y
+					
+					var destroy_pattern = [
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1],
+						[1, 1, 1, 1, 1],
 
-						tile_map.erase_cell(0, projectileCoord)
-						tile_map.erase_cell(0, otherProjectileCoords)
+
+					]
+					
+					for row in destroy_pattern:
+						var x = start_vector.x
+						for col in row:
+							if col == 1:
+								tile_map.erase_cell(0, Vector2i(x, y))
+							
+							x += 1
+						y -=1
+			
+			
 					projectile.queue_free()
 					enemy_projectiles.erase(projectile)
 	

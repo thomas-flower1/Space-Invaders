@@ -36,7 +36,7 @@ func _ready():
 	delay += time_to_wait("*SCORE ADVANCE TABLE*") - 4
 	await get_tree().create_timer(delay).timeout
 	
-	# TODO add score table 
+	# score table 
 	ufo.visible = true
 	draw_text("=? MYSTERY", mystery)
 	delay += time_to_wait("=? MYSTERY") 

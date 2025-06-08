@@ -4,7 +4,7 @@ extends Area2D
 @onready var ray_cast_left = $rayCastLeft
 @onready var game_manager = get_parent()
 @onready var player = $"../../player/player"
-@onready var animation = $AnimatedSprite2D
+@onready var animation = $animation
 @onready var death_timer = $death_timer # keep the enemy alive for a second after the collision
 
 
@@ -17,12 +17,16 @@ var score: int # the score value
 
 # when the enemy is created, assign the animation with the type
 func _ready():
+	pass
+
 	if type == 1:
 		animation.play("enemy1")
 	elif type == 2:
 		animation.play("enemy2")
 	else:
 		animation.play("enemy3")
+	
+	animation.stop() # pause the animation until the game starts
 	
 
 func _on_body_entered(projectile: CharacterBody2D) -> void:

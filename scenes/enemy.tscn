@@ -46,7 +46,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"enemy1",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -57,7 +57,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"enemy2",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -68,7 +68,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"enemy3",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -90,10 +90,11 @@ scale = Vector2(2, 2)
 collision_mask = 2
 script = ExtResource("1_s28jn")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="animation" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_tah42")
-animation = &"explosion"
+animation = &"enemy3"
+frame_progress = 0.871023
 
 [node name="rayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-16, 0)

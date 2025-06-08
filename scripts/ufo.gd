@@ -53,15 +53,14 @@ func _on_body_entered(projectile: CharacterBody2D):
 	
 	var score = generate_score()
 	
-	
-	
-	#TODO create a label when it dies
+	# creating and displaying the score on death
 	ufo_score.visible = true
 	ufo_score.position = position
 	ufo_score.text = str(score)
 	
 	ufo_score_timer.start(1)
 	
+	# TODO add explosion on death
 	
 	
 	

@@ -75,6 +75,10 @@ one_shot = true
 
 [node name="ufo score timer" type="Timer" parent="GameManager"]
 
+[node name="startTimer" type="Timer" parent="GameManager"]
+
+[node name="enemyRowTimer" type="Timer" parent="GameManager"]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="player" type="Node" parent="."]
@@ -191,3 +195,4 @@ theme_override_font_sizes/font_size = 16
 [connection signal="timeout" from="GameManager/ufoTimer" to="GameManager" method="_on_ufo_timer_timeout"]
 [connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufo score timer" to="GameManager" method="_on_ufo_score_timer_timeout"]
+[connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
