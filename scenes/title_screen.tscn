@@ -126,6 +126,7 @@ offset_right = 184.0
 offset_bottom = 160.0
 theme_override_fonts/font = ExtResource("1_mghq5")
 theme_override_font_sizes/font_size = 32
+metadata/_edit_use_anchors_ = true
 
 [node name="mystery" type="Label" parent="scores"]
 offset_left = -88.0
@@ -134,6 +135,7 @@ offset_right = 184.0
 offset_bottom = 96.0
 theme_override_fonts/font = ExtResource("1_mghq5")
 theme_override_font_sizes/font_size = 32
+metadata/_edit_use_anchors_ = true
 
 [node name="crab points" type="Label" parent="scores"]
 offset_left = -88.0
@@ -150,3 +152,26 @@ offset_right = 184.0
 offset_bottom = 280.0
 theme_override_fonts/font = ExtResource("1_mghq5")
 theme_override_font_sizes/font_size = 32
+
+[node name="newGame" type="Node" parent="."]
+
+[node name="Push" type="Label" parent="newGame"]
+visible = false
+offset_left = -64.0
+offset_top = -128.0
+offset_right = 48.0
+offset_bottom = -96.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+text = "PUSH"
+metadata/_edit_use_anchors_ = true
+
+[node name="playerButton" type="Label" parent="newGame"]
+visible = false
+offset_left = -256.0
+offset_top = -32.0
+offset_right = 268.0
+theme_override_fonts/font = ExtResource("1_mghq5")
+theme_override_font_sizes/font_size = 32
+text = "1 OR 2PLAYERS BUTTON"
+metadata/_edit_use_anchors_ = true

@@ -9,6 +9,7 @@ extends Area2D
 
 
 
+
 const PROJECTILE = preload("res://scenes/projectile.tscn") # for creating the projectiles later
 
 var type: int = 1 # the type of enemy it is

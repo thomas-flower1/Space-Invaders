@@ -7,7 +7,7 @@ extends Node
 
 
 @onready var enemy = $enemy
-@onready var tile_map = $"../TileMap2" 
+@onready var tile_map = $"../TileMap" 
 
 # LABELS
 @onready var scoreLabel = $"../text/score" # to update the player score
@@ -26,6 +26,7 @@ extends Node
 
 
 
+@onready var explosion: AnimatedSprite2D = $explosion # explosion animation for the enemy
 
 
 @onready var player = $"../player/player"
@@ -63,11 +64,10 @@ const UFO = preload("res://scenes/ufo.tscn")
 
 
 # TODO speed up the game
-# TODO speed up player projectile, change the player sprite also
-# TODO update death screen
+# TODO change the player sprite
+# TODO update death screen, make it gradual
 # TODO change the score so that it is always getting from the global scope
-# TODO move player projectile into game manager
-
+# TODO update the high score on a gameover
 
 # when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -79,7 +79,7 @@ func _ready() -> void:
 	Plays the animation to spawn everything in
 	
 	'''
-	
+
 	const number_of_enemies_per_row: int = 11
 	const spawn_interval: float = 0.05
 	var time_to_wait: float = 0
@@ -98,12 +98,12 @@ func _ready() -> void:
 
 	
 	create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
 	await get_tree().create_timer(time_to_wait).timeout
 
 	
 	create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
 	await get_tree().create_timer(time_to_wait).timeout
 	
 	create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
@@ -145,7 +145,6 @@ func create_enemy_row(startX: int, startY: int, enemyType: int, score: int, spaw
 	
 func _on_start_timer_timeout() -> void:
 	for enemy in enemies:
-
 		var animation_node = enemy.get_node("animation")
 		animation_node.play()
 	running = true
@@ -168,15 +167,16 @@ func format_score() -> void:
 	
 # main game loop
 func _process(delta):
-	
 	if player.lives == 0:
 		running = false
 		death_label.visible = true
 		
+		GlobleVars.isTitleScreen = false
+		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
 		# TODO add gameover and swap back to title screen
 		# TODO pause running again
 		
-		pass
+	
 	
 	if enemies.is_empty():
 		GlobleVars.score = score
@@ -210,8 +210,6 @@ func _process(delta):
 			deathTimerStarted = true
 			deathTimer.start(deathTimoutDuration)
 	
-	
-	# if all the enemies are dead
 	
 
 		
@@ -315,9 +313,8 @@ func update_enemy_projectiles(delta) -> void:
 				var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, projectile_coord) # will return either a valid or invalid tile
 				
 				if map_coord != Vector2i(-1, -1): 
-					# TODO add an explostion animation
-					
-			
+				
+					# TODO add randomdesory patterns again
 					var start_vector: Vector2i = projectile_coord - Vector2i(1, -1)
 					var y = start_vector.y
 					

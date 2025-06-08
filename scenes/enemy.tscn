@@ -94,7 +94,7 @@ script = ExtResource("1_s28jn")
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_tah42")
 animation = &"enemy3"
-frame_progress = 0.871023
+frame_progress = 0.350137
 
 [node name="rayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-16, 0)
