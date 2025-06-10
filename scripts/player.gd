@@ -18,10 +18,9 @@ var projectile: CharacterBody2D = null
 var lives: int = 3
 var explosion_animation_time: float = 0.3
 
-# TODO change the projectile to a kinematic body 2d to prevent tunelling
 
 # pre defined function
-func _physics_process(_delta) -> void:
+func _physics_process(delta) -> void:
 	if game_manager.running:
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if direction:
@@ -30,6 +29,31 @@ func _physics_process(_delta) -> void:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 
 		move_and_slide()
+		
+		if is_instance_valid(projectile) and projectile:
+			var distance = Vector2(0, -900 * delta) # calculate the distance in which we want to move the projecile
+			var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
+			
+			if collision:
+				var collision_pos = Vector2i(collision.get_position()) - Vector2i(0, 1) # we want to check the coord one above the collision
+				var object_coord: Vector2i = tile_map.local_to_map(collision_pos) # gets the corresponding coord in the map
+				var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, object_coord) # will return either a valid or invalid tile
+				
+				character_functions.remove_tile_explosion(collision_pos, tile_map) # remove multiple tiles
+				main.remove_child(projectile) # if there is a tile there remove the projectile
+				projectile = null 
+			
+			
+			# if the projectile is off the sceen remove it
+			elif projectile.position.y < -256:
+				explosion.visible = true
+				explosion.position.x = projectile.position.x
+				explosion_timer.start(explosion_animation_time)
+				projectile.queue_free()
+				projectile = null
+	
+	
+	
 
 func _input(event)-> void:
 	'''
@@ -43,24 +67,6 @@ func _input(event)-> void:
 		main.add_child(p) # add to the scene tree
 		projectile = p # give global scope
 
-# each frame
-func _process(delta):
-	# if a projectile exists
-	if is_instance_valid(projectile) and projectile:
-		projectile.position.y -= BULLETSPEED * delta 
-		
-		if character_functions.remove_tile_explosion(projectile.position, tile_map):
-			main.remove_child(projectile) # if there is a tile there remove the projectile
-			projectile = null 
-			
-		# if the projectile is off the sceen remove it
-		elif projectile.position.y < -256:
-			explosion.visible = true
-			explosion.position.x = projectile.position.x
-			explosion_timer.start(explosion_animation_time)
-			projectile.queue_free()
-			projectile = null
-			
 
 
 func _on_player_collision_body_entered(body):
