@@ -56,18 +56,19 @@ const UFO = preload("res://scenes/ufo.tscn")
 @export var running: bool = false # false until we spawn all the enemies
 
 const PROJECTILE = preload("res://scenes/projectile.tscn")
-const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
+const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene 
 
 var player_projectiles: Array = []
 var enemy_projectiles: Array = [] 
 var enemies: Array = []
-const MINTIME: float = 0.1 # the mintime for an enemy to shoot
-const MAXTIME: float = 0.33# the maxtime for an enemy to shoot
+const MINTIME: float = 0.6# the mintime for an enemy to shoot
+const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
 
 var direction = 1 # for the movement, whether moving left or right
 var hidden_coord: Vector2i = Vector2i(1000, 1000)
 
 @onready var score_label = $"../text/score" # to update the player score
+@onready var lives_label: Label = $"../text/livesLabel"
 
 
 
@@ -90,6 +91,7 @@ func _ready() -> void:
 	
 	'''
 	
+	score_label.text = format_score(GlobleVars.score)
 	
 	const number_of_enemies_per_row: int = 11
 	const spawn_interval: float = 0.05
@@ -122,6 +124,7 @@ func _ready() -> void:
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
+	
 
 	
 	
@@ -188,14 +191,13 @@ func _process(delta):
 	
 	
 	if enemies.is_empty():
-		
-		
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
 	if running:
+		if shooting_interval.is_stopped():
+			shooting_interval.start(randf_range(MINTIME, MAXTIME))
 		
-		if not shooting:
-			activate_shooting()
+		
 		
 		## UFO
 		#var ufo = get_node_or_null('ufo') # check if there is a ufo in the scene tree
@@ -209,6 +211,7 @@ func _process(delta):
 	
 		# SCORE
 		score_label.text = format_score(GlobleVars.score)
+		lives_label.text = str(GlobleVars.lives)
 		
 		
 		
@@ -238,9 +241,7 @@ func activate_shooting() -> void:
 			projectile.position = Vector2i(random_enemy.position)
 			enemy_projectiles.append(projectile)
 	
-	# setting an interval between enemy shooting
-	shooting_interval.start(random_time)
-	shooting = true
+	
 	
 
 func get_random_enemy() -> Area2D:
@@ -252,8 +253,8 @@ func get_random_enemy() -> Area2D:
 	return enemy
 		
 	
-func _on_timer_timeout():
-	shooting = false
+
+
 
 
 
@@ -341,3 +342,7 @@ func format_score(score) -> String:
 
 func _on_ufo_score_timer_timeout() -> void:
 	ufo_score.visible = false
+
+
+func _on_shooting_interval_timeout() -> void:     
+	activate_shooting()

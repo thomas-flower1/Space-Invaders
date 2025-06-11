@@ -62,6 +62,11 @@ func remove_tile_explosion(coord: Vector2i, tile_map: TileMap):
 
 func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, delta: float, projectile_array: Array, direction: int) -> void:
 	
+	# TODO remove the animation for the bottom collisions
+	# TODO player collisions update lives
+	# TODO remove only a single tile with bottom tile
+	# TODO prvent getting two explosions for the collisions
+	
 	var hidden_coord: Vector2i = Vector2i(1000, 1000) # somewhere far off screen
 
 	var distance = Vector2(0, direction * game_manager.PROJECTILESPEED * delta) # calculate the distance in which we want to move the projecile
@@ -124,6 +129,8 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 			## collided with the player
 			projectile_array.erase(projectile)
 			projectile.position = hidden_coord
+			
+			# TODO decrement the lives
 			return 
 			
 	
