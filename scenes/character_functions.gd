@@ -123,14 +123,13 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 			projectile.position = hidden_coord
 			return
 		
-	
+		
+		
 		if collision.get_collider().name == "player":
 			
-			## collided with the player
 			projectile_array.erase(projectile)
 			projectile.position = hidden_coord
-			
-			# TODO decrement the lives
+		
 			return 
 			
 	

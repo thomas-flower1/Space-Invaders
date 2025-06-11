@@ -1,49 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://bovssfjl8iwvm"]
+[gd_scene load_steps=5 format=3 uid="uid://bovssfjl8iwvm"]
 
 [ext_resource type="Script" uid="uid://cviitxppemplh" path="res://scripts/player.gd" id="1_1xaql"]
-[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_h8elq"]
+[ext_resource type="Texture2D" uid="uid://4pwxa7rpk0ak" path="res://assets/space__0006_Player.png" id="2_g2els"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sl7v8"]
-atlas = ExtResource("1_h8elq")
-region = Rect2(67, 0, 11, 15)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
+size = Vector2(48, 21)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_t4fld"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_sl7v8")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
-radius = 16.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
+size = Vector2(48, 20)
 
 [node name="player" type="CharacterBody2D"]
 position = Vector2(0, 240)
-collision_mask = 0
+collision_mask = 128
 script = ExtResource("1_1xaql")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
 position = Vector2(0, 8)
-scale = Vector2(3.63636, 3.38333)
-sprite_frames = SubResource("SpriteFrames_t4fld")
+collision_layer = 128
+collision_mask = 128
 
-[node name="playerCollision" type="Area2D" parent="."]
-position = Vector2(0, 24)
-collision_mask = 0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_qhqgy")
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="playerCollision"]
-position = Vector2(0, -24)
-polygon = PackedVector2Array(0, -8, -8, 0, -8, 16, -16, 16, -16, 24, 16, 24, 16, 16, 8, 16, 8, 0)
+[node name="invincibleTimer" type="Timer" parent="."]
 
-[node name="explosion_timer" type="Timer" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(0, 8)
+scale = Vector2(2, 2)
+texture = ExtResource("2_g2els")
+region_enabled = true
+region_rect = Rect2(0, 0, 26, 15)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 8)
-shape = SubResource("CircleShape2D_g2els")
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_g2els")
 
-[connection signal="body_entered" from="playerCollision" to="." method="_on_player_collision_body_entered"]
-[connection signal="timeout" from="explosion_timer" to="." method="_on_explosion_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="invincibleTimer" to="." method="_on_invincible_timer_timeout"]

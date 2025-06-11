@@ -2,11 +2,14 @@ extends CharacterBody2D
 
 
 @onready var game_manager = %GameManager
-@onready var lives_label = $"../../text/lives"
 @onready var projectile: CharacterBody2D = $"../projectile"
+@onready var invincible_timer: Timer = $invincibleTimer
+@onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
+@onready var area_2d: Area2D = $Area2D
 
 
 const SPEED: int = 300
+var invincible: bool = false
 
 # pre defined function
 func _physics_process(delta) -> void:
@@ -35,15 +38,17 @@ func _input(event)-> void:
 		
 
 
+func _on_area_2d_body_entered(p: CharacterBody2D) -> void:
+	
+	if not invincible:
+		invincible = true
+		invincible_timer.start(1)
+		p.position = Vector2i(1000, 1000)
+		game_manager.enemy_projectiles.erase(p)
+		GlobleVars.lives -= 1
+	
+	
 
-func _on_player_collision_body_entered(body):
-	game_manager.lives -= 1
-	lives_label.text = str(game_manager.lives)
-	
-	# need to remove from the projeciles array
-	game_manager.enemy_projectiles.erase(body)
-	body.postion = game_manager.hidden_coord
-	
-	
-	
-	
+
+func _on_invincible_timer_timeout() -> void:
+	invincible = false
