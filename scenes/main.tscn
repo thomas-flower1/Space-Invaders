@@ -33,7 +33,8 @@ texture_region_size = Vector2i(4, 4)
 
 [sub_resource type="TileSet" id="TileSet_usg7h"]
 tile_size = Vector2i(4, 4)
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 2
+physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_xi44j")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
@@ -68,7 +69,7 @@ script = ExtResource("2_rmiqm")
 [node name="GameLoop" type="Timer" parent="GameManager"]
 one_shot = true
 
-[node name="Timer" type="Timer" parent="GameManager"]
+[node name="shootingInterval" type="Timer" parent="GameManager"]
 
 [node name="ufoTimer" type="Timer" parent="GameManager"]
 
@@ -87,9 +88,12 @@ one_shot = true
 [node name="player" type="Node" parent="."]
 
 [node name="player" parent="player" instance=ExtResource("1_65wcy")]
+collision_layer = 8
 
 [node name="projectile" parent="player" instance=ExtResource("4_o6xl0")]
 position = Vector2(1000, 1000)
+collision_layer = 1
+collision_mask = 2
 
 [node name="world" type="Node" parent="."]
 
@@ -202,7 +206,7 @@ frame_progress = 0.819312
 [node name="explosionTimer" type="Timer" parent="ShieldCollisions"]
 
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
-[connection signal="timeout" from="GameManager/Timer" to="GameManager" method="_on_timer_timeout"]
+[connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufoTimer" to="GameManager" method="_on_ufo_timer_timeout"]
 [connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufo score timer" to="GameManager" method="_on_ufo_score_timer_timeout"]

@@ -4,13 +4,13 @@ extends Node
 
 
 # LABELS
-@onready var scoreLabel = $"../text/score" # to update the player score
+
 @onready var ufo_score: Label = $"../text/ufo score"
 
 
 
 # TIMERS
-@onready var timer = $Timer # use a timer to get the enemies to shoot
+@onready var shooting_interval = $shootingInterval # use a timer to get the enemies to shoot
 @onready var ufo_timer = $ufoTimer # spawn every 25 seconds
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
@@ -31,8 +31,6 @@ extends Node
 
 # main game
 var gameLoopSet = false
-
-var lives: int = 3
 
 const deathTimoutDuration: int = 5 # the time the game freezes when the player dies
 var deathTimerStarted: bool = false
@@ -60,7 +58,6 @@ const UFO = preload("res://scenes/ufo.tscn")
 const PROJECTILE = preload("res://scenes/projectile.tscn")
 const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 
-var score: int = 0
 var player_projectiles: Array = []
 var enemy_projectiles: Array = [] 
 var enemies: Array = []
@@ -68,6 +65,9 @@ const MINTIME: float = 0.1 # the mintime for an enemy to shoot
 const MAXTIME: float = 0.33# the maxtime for an enemy to shoot
 
 var direction = 1 # for the movement, whether moving left or right
+var hidden_coord: Vector2i = Vector2i(1000, 1000)
+
+@onready var score_label = $"../text/score" # to update the player score
 
 
 
@@ -122,7 +122,6 @@ func _ready() -> void:
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
-	score = GlobleVars.score # loading the score back from prev rounds
 
 	
 	
@@ -130,8 +129,9 @@ func _ready() -> void:
 	for i in range(number_of_enemy_projectiles):
 		var enemy_projectile = PROJECTILE.instantiate();
 		enemy_projectile.position = Vector2i(1000, 1000) # move this into a global varaible
-		enemy_projectile.set_collision_layer_value(1, false)
-		enemy_projectile.set_collision_layer_value(2, true)
+		#enemy_projectile.set_collision_layer_value(1, false)
+		#enemy_projectile.set_collision_layer_value(2, true)
+		#enemy_projectile.set_collision_mask_value(1, true)
 		add_sibling(enemy_projectile)
 	
 func create_enemy_row(start_x: int, start_y: int, enemy_type: int, score: int, spawn_interval: float, number_per_row: int=11) -> void:
@@ -175,20 +175,20 @@ func _physics_process(delta: float) -> void:
 func _process(delta):
 	
 	# if death
-	if lives == 0:
-		
-		# TODO this whole section
-		running = false
-		death_label.visible = true
-		GlobleVars.isTitleScreen = false
-		get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
-		# TODO add gameover and swap back to title screen
-		# TODO pause running again
+	#if lives == 0:
+		#
+		## TODO this whole section
+		#running = false
+		#death_label.visible = true
+		#GlobleVars.isTitleScreen = false
+		#get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+		## TODO add gameover and swap back to title screen
+		## TODO pause running again
 		
 	
 	
 	if enemies.is_empty():
-		GlobleVars.score = score
+		
 		
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
@@ -207,8 +207,9 @@ func _process(delta):
 			gameLoopTimer.start(1) # this actually means that it is called each second, need to change the one shot
 		
 	
-		# need to just format it slightly
-		format_score()
+		# SCORE
+		score_label.text = format_score(GlobleVars.score)
+		
 		
 		
 		
@@ -238,7 +239,7 @@ func activate_shooting() -> void:
 			enemy_projectiles.append(projectile)
 	
 	# setting an interval between enemy shooting
-	timer.start(random_time)
+	shooting_interval.start(random_time)
 	shooting = true
 	
 
@@ -326,15 +327,15 @@ func _on_death_timer_timeout():
 	deathTimerStarted = false
 	running = true
 
-func format_score() -> void:
+func format_score(score) -> String:
 	if score == 0:
-		scoreLabel.text = "0000"
+		return "0000"
 	elif score < 100:
-		scoreLabel.text = "00" + str(score)
+		return "00" + str(score)
 	elif score < 1000:
-		scoreLabel.text = "0" + str(score)
+		return "0" + str(score)
 	else:
-		scoreLabel.text = str(score)
+		return str(score)
 	
 
 

@@ -28,7 +28,7 @@ func _input(event)-> void:
 	Adds the node under player node
 	'''
 
-	if event.is_action_pressed("shoot") and game_manager.running: # if we have no projectile on the screen
+	if event.is_action_pressed("shoot") and game_manager.running and game_manager.player_projectiles.is_empty(): # if we have no projectile on the screen
 		projectile.position = position 
 		game_manager.player_projectiles.append(projectile)
 		
@@ -39,6 +39,11 @@ func _input(event)-> void:
 func _on_player_collision_body_entered(body):
 	game_manager.lives -= 1
 	lives_label.text = str(game_manager.lives)
+	
+	# need to remove from the projeciles array
 	game_manager.enemy_projectiles.erase(body)
-	body.queue_free()
+	body.postion = game_manager.hidden_coord
+	
+	
+	
 	

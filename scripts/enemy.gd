@@ -30,8 +30,13 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	Play an animation, delete the projecile, wait, then delete the enemy
 	
 	'''
+	
+	# need to remove the projectile
+	game_manager.player_projectiles.erase(projectile)
+	projectile.position = game_manager.hidden_coord
 	game_manager.enemies.erase(self)
 	queue_free()
+	GlobleVars.score += score
 	
 	
 	#var death_delay: float = 0.1

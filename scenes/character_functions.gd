@@ -116,7 +116,16 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 			remove_tile_explosion(bottom_right, tile_map)
 			projectile_array.erase(projectile)
 			projectile.position = hidden_coord
+			return
+		
+	
+		if collision.get_collider().name == "player":
+			
+			## collided with the player
+			projectile_array.erase(projectile)
+			projectile.position = hidden_coord
 			return 
+			
 	
 	if projectile.position.y < -256 or projectile.position.y > 352:
 		# want to add the explosion animatio too
