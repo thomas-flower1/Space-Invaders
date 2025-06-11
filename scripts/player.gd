@@ -11,7 +11,7 @@ extends CharacterBody2D
 
 
 const SPEED: int = 300
-const BULLETSPEED: int = 950 #950
+const BULLETSPEED: int = 1500
 
 
 var projectile: CharacterBody2D = null
@@ -30,20 +30,39 @@ func _physics_process(delta) -> void:
 
 		move_and_slide()
 		
+		# Collison with the shield logic
 		if is_instance_valid(projectile) and projectile:
-			var distance = Vector2(0, -900 * delta) # calculate the distance in which we want to move the projecile
+			
+			var distance = Vector2(0, -1 * BULLETSPEED * delta) # calculate the distance in which we want to move the projecile
 			var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
 			
 			if collision:
-				var collision_pos = Vector2i(collision.get_position()) - Vector2i(0, 1) # we want to check the coord one above the collision
-				var object_coord: Vector2i = tile_map.local_to_map(collision_pos) # gets the corresponding coord in the map
-				var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, object_coord) # will return either a valid or invalid tile
 				
-				character_functions.remove_tile_explosion(collision_pos, tile_map) # remove multiple tiles
-				main.remove_child(projectile) # if there is a tile there remove the projectile
-				projectile = null 
-			
-			
+				# checking the tile above, top right, top left
+				var top_right: Vector2i = Vector2i(collision.get_position())- Vector2i(1, 1) 
+				var top_left: Vector2i = Vector2i(collision.get_position()) - Vector2i(-1, 1)
+				var top_middle: Vector2i = Vector2i(collision.get_position()) - Vector2i(0, 1) 
+				
+				
+				if valid_tile(top_middle):
+					character_functions.remove_tile_explosion(top_middle, tile_map)
+					main.remove_child(projectile) # if there is a tile there remove the projectile
+					projectile.queue_free()
+					projectile = null 
+					
+				elif valid_tile(top_left):
+					character_functions.remove_tile_explosion(top_left, tile_map)
+					main.remove_child(projectile) # if there is a tile there remove the projectile
+					projectile.queue_free()
+					projectile = null 
+				#
+				elif valid_tile(top_right):
+					character_functions.remove_tile_explosion(top_right, tile_map)
+					main.remove_child(projectile) # if there is a tile there remove the projectile
+					projectile.queue_free()
+					projectile = null 
+
+
 			# if the projectile is off the sceen remove it
 			elif projectile.position.y < -256:
 				explosion.visible = true
@@ -51,6 +70,12 @@ func _physics_process(delta) -> void:
 				explosion_timer.start(explosion_animation_time)
 				projectile.queue_free()
 				projectile = null
+	
+func valid_tile(coord: Vector2i) -> bool:
+	var object_coord: Vector2i = tile_map.local_to_map(coord) # gets the corresponding coord in the map
+	if tile_map.get_cell_atlas_coords(0, object_coord) == Vector2i(-1, -1):
+		return false
+	return true
 	
 	
 	

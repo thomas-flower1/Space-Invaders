@@ -6,7 +6,7 @@ extends Node
 
 
 
-@onready var enemy = $enemy
+
 @onready var tile_map = $"../TileMap" 
 
 # LABELS
@@ -62,6 +62,7 @@ var direction: int = 1
 const UFO_SPAWN_TIME: int = 23
 const UFO = preload("res://scenes/ufo.tscn")
 
+@onready var character_functions: Node = $"../Character Functions"
 
 # TODO speed up the game
 # TODO change the player sprite
@@ -302,45 +303,31 @@ func _on_death_timer_timeout():
 
 
 func update_enemy_projectiles(delta) -> void:
+	
+	# TODO reuse the code from the player
 	if not enemy_projectiles.is_empty():
 			for projectile in enemy_projectiles:
 				
-				# TODO turn this into a function
-				projectile.position.y += PROJECTILESPEED * delta
+				var distance = Vector2(0, 1 * PROJECTILESPEED * delta) # calculate the distance in which we want to move the projecile
+				var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
 				
-				
-				var projectile_coord: Vector2i = tile_map.local_to_map(projectile.position) # gets the corresponding coord in the map
-				var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, projectile_coord) # will return either a valid or invalid tile
-				
-				if map_coord != Vector2i(-1, -1): 
-				
-					# TODO add randomdesory patterns again
-					var start_vector: Vector2i = projectile_coord - Vector2i(1, -1)
-					var y = start_vector.y
+				if collision:
+					var collision_pos = Vector2i(collision.get_position()) + Vector2i(0, 1) # we want to check the coord one above the collision
+					var object_coord: Vector2i = tile_map.local_to_map(collision_pos) # gets the corresponding coord in the map
+					var map_coord: Vector2i = tile_map.get_cell_atlas_coords(0, object_coord) # will return either a valid or invalid tile
 					
-					var destroy_pattern = [
-						[1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1],
-						[1, 1, 1, 1, 1],
-
-
-					]
 					
-					for row in destroy_pattern:
-						var x = start_vector.x
-						for col in row:
-							if col == 1:
-								tile_map.erase_cell(0, Vector2i(x, y))
-							
-							x += 1
-						y -=1
+					tile_map.erase_cell(0, map_coord)
+					#character_functions.remove_tile_explosion(collision_pos, tile_map) # remove multiple tiles
+					# remove_child(projectile) # if there is a tile there remove the projectile
+				
+				
+				
 			
-			
-					projectile.queue_free()
-					enemy_projectiles.erase(projectile)
-	
+			 
+					#projectile.queue_free()
+					#enemy_projectiles.erase(projectile)
+	#
 	
 
 
