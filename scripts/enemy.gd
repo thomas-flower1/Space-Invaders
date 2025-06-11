@@ -1,6 +1,6 @@
 extends Area2D
 
-@onready var game_manager: GameManager = %GameManager
+@onready var game_manager: GameManager = get_parent()
 @onready var ray_cast_right = $rayCastRight
 @onready var ray_cast_left = $rayCastLeft
 @onready var player = $"../../player/player"
@@ -30,7 +30,10 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	Play an animation, delete the projecile, wait, then delete the enemy
 	
 	'''
-	pass
+	game_manager.enemies.erase(self)
+	queue_free()
+	
+	
 	#var death_delay: float = 0.1
 	#animation.play("explosion")
 	#projectile.queue_free()

@@ -118,7 +118,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 			projectile.position = hidden_coord
 			return 
 	
-	if projectile.position.y < -256:
+	if projectile.position.y < -256 or projectile.position.y > 352:
 		# want to add the explosion animatio too
 		explosion.visible = true
 		explosion.position = projectile.position

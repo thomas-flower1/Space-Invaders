@@ -28,7 +28,7 @@ extends Node
 @onready var death_label = $"../text/death_label"
 
 # SCENES
-const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
+
 # main game
 var gameLoopSet = false
 
@@ -39,14 +39,9 @@ var deathTimerStarted: bool = false
 
 #shooting
 const PROJECTILESPEED: int = 950
-const MINTIME: int = 0 # the mintime for an enemy to shoot
-const MAXTIME: int = 3 # the maxtime for an enemy to shoot
+
 var shooting = false # check if we are currently 'shooting'
 
-
-# enemies
-var enemies: Array = []
-var direction: int = 1
 
 
 # ufo
@@ -63,10 +58,16 @@ const UFO = preload("res://scenes/ufo.tscn")
 @export var running: bool = false # false until we spawn all the enemies
 
 const PROJECTILE = preload("res://scenes/projectile.tscn")
+const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 
 var score: int = 0
 var player_projectiles: Array = []
 var enemy_projectiles: Array = [] 
+var enemies: Array = []
+const MINTIME: float = 0.1 # the mintime for an enemy to shoot
+const MAXTIME: float = 0.33# the maxtime for an enemy to shoot
+
+var direction = 1 # for the movement, whether moving left or right
 
 
 
@@ -125,11 +126,13 @@ func _ready() -> void:
 
 	
 	
-	# TODO need to instantiate the enemy projeciles also, maybe around 5 - 10 should suffice
-	var enemy_projectile = PROJECTILE.instantiate();
-	enemy_projectile.position = Vector2i(100, 0) # move this into a global varaible
-	add_child(enemy_projectile)
-	enemy_projectiles.append(enemy_projectile)
+	var number_of_enemy_projectiles: int = 5
+	for i in range(number_of_enemy_projectiles):
+		var enemy_projectile = PROJECTILE.instantiate();
+		enemy_projectile.position = Vector2i(1000, 1000) # move this into a global varaible
+		enemy_projectile.set_collision_layer_value(1, false)
+		enemy_projectile.set_collision_layer_value(2, true)
+		add_sibling(enemy_projectile)
 	
 func create_enemy_row(start_x: int, start_y: int, enemy_type: int, score: int, spawn_interval: float, number_per_row: int=11) -> void:
 	for i in number_per_row: 
@@ -145,7 +148,7 @@ func create_enemy_row(start_x: int, start_y: int, enemy_type: int, score: int, s
 		enemies.append(enemy) # add to the array of all enemies
 		
 		start_x += 50 # increment the x coord for the next enemy
-		await get_tree().create_timer(spawn_interval).timeout
+		await get_tree().create_timer(spawn_interval).timeout 
 		
 	
 func _on_start_timer_timeout() -> void:
@@ -156,6 +159,7 @@ func _on_start_timer_timeout() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
+	
 	# for the player projeciles
 	if !player_projectiles.is_empty():
 		for projectile in player_projectiles:
@@ -166,26 +170,14 @@ func _physics_process(delta: float) -> void:
 		for projectile in enemy_projectiles:
 			shield_collisions.handle_shield_collision(projectile, tile_map, delta, enemy_projectiles, 1)
 			
-		 
-		
-	
-	
-
-func format_score() -> void:
-	if score == 0:
-		scoreLabel.text = "0000"
-	elif score < 100:
-		scoreLabel.text = "00" + str(score)
-	elif score < 1000:
-		scoreLabel.text = "0" + str(score)
-	else:
-		scoreLabel.text = str(score)
-	
 	
 # main game loop
 func _process(delta):
+	
 	# if death
 	if lives == 0:
+		
+		# TODO this whole section
 		running = false
 		death_label.visible = true
 		GlobleVars.isTitleScreen = false
@@ -202,16 +194,15 @@ func _process(delta):
 		
 	if running:
 		
-		print(get_random_enemy().type)
-		#if not shooting:
-			#activate_shooting()
+		if not shooting:
+			activate_shooting()
 		
-		# UFO
-		var ufo = get_node_or_null('ufo') # check if there is a ufo in the scene tree
-		if ufo:
-			ufo.move_ufo()
+		## UFO
+		#var ufo = get_node_or_null('ufo') # check if there is a ufo in the scene tree
+		#if ufo:
+			#ufo.move_ufo()
 		
-		if not gameLoopSet and running:
+		if not gameLoopSet:
 			gameLoopSet = true
 			gameLoopTimer.start(1) # this actually means that it is called each second, need to change the one shot
 		
@@ -219,8 +210,7 @@ func _process(delta):
 		# need to just format it slightly
 		format_score()
 		
-		# updating the enemy projectiles
-		update_enemy_projectiles(delta)
+		
 		
 	# if the game is not running
 	else:
@@ -231,23 +221,31 @@ func _process(delta):
 	
 
 
-		
-		
-		
-
-
-#func activate_shooting() -> void:
-	#var random_enemy: Area2D = get_random_enemy()
-	#var random_time = randi_range(MINTIME, MAXTIME) 
-	#random_enemy.shoot()
-	#timer.start(random_time)
-	#shooting = true
-	#
+func activate_shooting() -> void:
+	'''
+	Picks a random enemy with no enemies underneath
+	Takes a projectile and adds to the projecitle array
+	Starts an interval between the next shot
+	
+	'''
+	var random_enemy: Area2D = get_random_enemy()
+	var random_time = randi_range(MINTIME, MAXTIME) 
+	
+	# need to get valid projectile
+	for projectile in get_parent().get_children():
+		if projectile is CharacterBody2D and not enemy_projectiles.has(projectile):
+			projectile.position = Vector2i(random_enemy.position)
+			enemy_projectiles.append(projectile)
+	
+	# setting an interval between enemy shooting
+	timer.start(random_time)
+	shooting = true
+	
 
 func get_random_enemy() -> Area2D:
 	var random_index: int = randi_range(0, enemies.size()-1)
 	var enemy: Area2D = enemies[random_index]
-	while !is_instance_valid(enemy) or enemy.colliding_bottom(): # to ensure the enemy has not been previously freed
+	while !is_instance_valid(enemy) or enemy.colliding_bottom(): # getting an enemy with nothing underneath
 		random_index = randi_range(0, enemies.size()-1)
 		enemy = enemies[random_index]
 	return enemy
@@ -255,6 +253,18 @@ func get_random_enemy() -> Area2D:
 	
 func _on_timer_timeout():
 	shooting = false
+
+
+
+
+
+
+
+
+
+
+
+
 
 func _on_ufo_timer_timeout():
 	var directions = [1, -1]
@@ -316,23 +326,16 @@ func _on_death_timer_timeout():
 	deathTimerStarted = false
 	running = true
 
-
-func update_enemy_projectiles(delta) -> void:
-	pass
+func format_score() -> void:
+	if score == 0:
+		scoreLabel.text = "0000"
+	elif score < 100:
+		scoreLabel.text = "00" + str(score)
+	elif score < 1000:
+		scoreLabel.text = "0" + str(score)
+	else:
+		scoreLabel.text = str(score)
 	
-	## TODO reuse the code from the player
-	#if not enemy_projectiles.is_empty():
-			#for projectile in enemy_projectiles:
-				#var distance = Vector2(0, 1 * PROJECTILESPEED * delta) # calculate the distance in which we want to move the projecile
-				#var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
-				#
-				#if collision:
-					#shield_collisions.handle_shield_collision(projectile, collision.get_position(), tile_map, get_parent())
-				#
-				
-				
-				
-			
 
 
 func _on_ufo_score_timer_timeout() -> void:

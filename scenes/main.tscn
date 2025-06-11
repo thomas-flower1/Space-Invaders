@@ -78,6 +78,7 @@ one_shot = true
 [node name="ufo score timer" type="Timer" parent="GameManager"]
 
 [node name="startTimer" type="Timer" parent="GameManager"]
+one_shot = true
 
 [node name="enemyRowTimer" type="Timer" parent="GameManager"]
 
