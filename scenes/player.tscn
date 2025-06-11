@@ -19,6 +19,7 @@ animations = [{
 }]
 
 [node name="player" type="CharacterBody2D"]
+position = Vector2(0, 240)
 script = ExtResource("1_1xaql")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

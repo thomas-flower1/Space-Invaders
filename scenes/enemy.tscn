@@ -106,8 +106,10 @@ shape = SubResource("RectangleShape2D_2jsen")
 [node name="rayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(16, 0)
 
-[node name="death_timer" type="Timer" parent="."]
+[node name="rayCastBottom" type="RayCast2D" parent="."]
+target_position = Vector2(0, 32)
+collide_with_areas = true
+collide_with_bodies = false
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
-[connection signal="timeout" from="death_timer" to="." method="_on_death_timer_timeout"]

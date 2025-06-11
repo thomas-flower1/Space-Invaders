@@ -1,59 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://ccx8w1sbpd7l2"]
+[gd_scene load_steps=17 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
 [ext_resource type="Script" uid="uid://dvrm7wbf8fbs7" path="res://scripts/GameManager.gd" id="2_rmiqm"]
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_xtdec"]
 [ext_resource type="Script" uid="uid://ogaelv1j6x7o" path="res://scripts/score.gd" id="4_cu8dy"]
+[ext_resource type="PackedScene" uid="uid://cumndowafrghy" path="res://scenes/projectile.tscn" id="4_o6xl0"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="6_8jw3o"]
 [ext_resource type="Script" uid="uid://6g65cahkv176" path="res://scenes/character_functions.gd" id="6_tefeu"]
 
 [sub_resource type="GDScript" id="GDScript_tbgi4"]
 script/source = "extends Node2D
 "
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
-atlas = ExtResource("6_8jw3o")
-region = Rect2(32, 48, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o6xl0"]
-atlas = ExtResource("6_8jw3o")
-region = Rect2(32, 64, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_tipki"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tefeu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o6xl0")
-}],
-"loop": true,
-"name": &"explosion",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ucrvo"]
-atlas = ExtResource("6_8jw3o")
-region = Rect2(32, 48, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g6cjw"]
-atlas = ExtResource("6_8jw3o")
-region = Rect2(32, 64, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_mc3ii"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ucrvo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g6cjw")
-}],
-"loop": true,
-"name": &"explosion",
-"speed": 5.0
-}]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq0r1"]
 distance = -22.0
@@ -76,9 +33,30 @@ texture_region_size = Vector2i(4, 4)
 
 [sub_resource type="TileSet" id="TileSet_usg7h"]
 tile_size = Vector2i(4, 4)
-physics_layer_0/collision_layer = 2
-physics_layer_0/collision_mask = 3
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_xi44j")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
+atlas = ExtResource("6_8jw3o")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6xl0"]
+atlas = ExtResource("6_8jw3o")
+region = Rect2(32, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tipki"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tefeu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o6xl0")
+}],
+"loop": true,
+"name": &"explosion",
+"speed": 4.0
+}]
 
 [node name="Main" type="Node2D"]
 script = SubResource("GDScript_tbgi4")
@@ -86,13 +64,6 @@ script = SubResource("GDScript_tbgi4")
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_rmiqm")
-
-[node name="explosion" type="AnimatedSprite2D" parent="GameManager"]
-visible = false
-scale = Vector2(3, 3)
-sprite_frames = SubResource("SpriteFrames_tipki")
-animation = &"explosion"
-frame_progress = 0.819312
 
 [node name="GameLoop" type="Timer" parent="GameManager"]
 one_shot = true
@@ -115,15 +86,9 @@ one_shot = true
 [node name="player" type="Node" parent="."]
 
 [node name="player" parent="player" instance=ExtResource("1_65wcy")]
-position = Vector2(0, 240)
 
-[node name="explosion" type="AnimatedSprite2D" parent="player"]
-visible = false
-position = Vector2(0, -256)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_mc3ii")
-animation = &"explosion"
-autoplay = "explosion"
+[node name="projectile" parent="player" instance=ExtResource("4_o6xl0")]
+position = Vector2(1000, 1000)
 
 [node name="world" type="Node" parent="."]
 
@@ -221,8 +186,19 @@ offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("3_xtdec")
 theme_override_font_sizes/font_size = 16
 
-[node name="Character Functions" type="Node" parent="."]
+[node name="ShieldCollisions" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("6_tefeu")
+
+[node name="explosion" type="AnimatedSprite2D" parent="ShieldCollisions"]
+visible = false
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_tipki")
+animation = &"explosion"
+autoplay = "explosion"
+frame_progress = 0.819312
+
+[node name="explosionTimer" type="Timer" parent="ShieldCollisions"]
 
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
 [connection signal="timeout" from="GameManager/Timer" to="GameManager" method="_on_timer_timeout"]
@@ -230,3 +206,4 @@ script = ExtResource("6_tefeu")
 [connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufo score timer" to="GameManager" method="_on_ufo_score_timer_timeout"]
 [connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
+[connection signal="timeout" from="ShieldCollisions/explosionTimer" to="ShieldCollisions" method="_on_explosion_timer_timeout"]
