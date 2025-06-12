@@ -1,7 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://ckwdoce02ay54"]
+[gd_scene load_steps=20 format=3 uid="uid://ckwdoce02ay54"]
 
 [ext_resource type="Script" uid="uid://cgk4xeyfmk6g4" path="res://scripts/enemy.gd" id="1_s28jn"]
 [ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="2_x30h7"]
+[ext_resource type="Texture2D" uid="uid://cxlkdcs36wfan" path="res://assets/space__0000_A1.png" id="3_5uy6h"]
+[ext_resource type="Texture2D" uid="uid://dejg04aayfn5e" path="res://assets/space__0001_A2.png" id="4_c4w8v"]
+[ext_resource type="Texture2D" uid="uid://bmetnd6vuft8e" path="res://assets/space__0002_B1.png" id="5_xwavj"]
+[ext_resource type="Texture2D" uid="uid://cd35uabjg6q7b" path="res://assets/space__0003_B2.png" id="6_nenq2"]
+[ext_resource type="Texture2D" uid="uid://b3kmb0k4l0um0" path="res://assets/space__0004_C1.png" id="7_md484"]
+[ext_resource type="Texture2D" uid="uid://gylpdhs6snwi" path="res://assets/space__0005_C2.png" id="8_ipns3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
 atlas = ExtResource("2_x30h7")
@@ -25,29 +31,21 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nxa0j"]
-atlas = ExtResource("2_x30h7")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xme7m"]
-atlas = ExtResource("2_x30h7")
-region = Rect2(16, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lofm2"]
-atlas = ExtResource("2_x30h7")
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwavj"]
+atlas = ExtResource("3_5uy6h")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ryhyp"]
-atlas = ExtResource("2_x30h7")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
+atlas = ExtResource("5_xwavj")
+region = Rect2(0, 0, 22, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ain2a"]
-atlas = ExtResource("2_x30h7")
-region = Rect2(0, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qclf"]
+atlas = ExtResource("7_md484")
+region = Rect2(0, 0, 24, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xflte"]
-atlas = ExtResource("2_x30h7")
-region = Rect2(16, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8i8w"]
+atlas = ExtResource("8_ipns3")
+region = Rect2(0, 0, 24, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gcumw"]
 atlas = ExtResource("2_x30h7")
@@ -61,10 +59,10 @@ region = Rect2(32, 64, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_nxa0j")
+"texture": SubResource("AtlasTexture_xwavj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xme7m")
+"texture": ExtResource("4_c4w8v")
 }],
 "loop": true,
 "name": &"enemy1",
@@ -72,10 +70,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lofm2")
+"texture": SubResource("AtlasTexture_md484")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ryhyp")
+"texture": ExtResource("6_nenq2")
 }],
 "loop": true,
 "name": &"enemy2",
@@ -83,10 +81,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ain2a")
+"texture": SubResource("AtlasTexture_8qclf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xflte")
+"texture": SubResource("AtlasTexture_w8i8w")
 }],
 "loop": true,
 "name": &"enemy3",
@@ -119,10 +117,10 @@ animation = &"explosion"
 autoplay = "explosion"
 
 [node name="animation" type="AnimatedSprite2D" parent="."]
-scale = Vector2(2, 2)
+scale = Vector2(0.833333, 1)
 sprite_frames = SubResource("SpriteFrames_tah42")
 animation = &"enemy3"
-frame_progress = 0.350137
+frame_progress = 0.709405
 
 [node name="rayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-16, 0)

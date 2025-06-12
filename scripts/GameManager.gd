@@ -25,7 +25,6 @@ extends Node
 @onready var player = $"../player/player"
 
 
-@onready var death_label = $"../text/death_label"
 
 # SCENES
 
@@ -70,7 +69,11 @@ var hidden_coord: Vector2i = Vector2i(1000, 1000)
 @onready var score_label = $"../text/score" # to update the player score
 @onready var lives_label: Label = $"../text/livesLabel"
 
+@onready var game_over_label: Label = $"../text/gameOverLabel"
 
+
+
+@onready var text: Node = $"../text" # for the gradual draawing function
 
 
 
@@ -178,12 +181,16 @@ func _physics_process(delta: float) -> void:
 func _process(delta):
 	
 	# if death
-	#if lives == 0:
-		#
-		## TODO this whole section
-		#running = false
-		#death_label.visible = true
-		#GlobleVars.isTitleScreen = false
+	if GlobleVars.lives == 0:
+		
+		running = false
+		if not game_over_label.visible:
+			text.draw_text("GAME OVER", game_over_label)
+		game_over_label.visible = true
+	
+		
+		
+		# TODO wait for input to change the scene
 		#get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
 		## TODO add gameover and swap back to title screen
 		## TODO pause running again
