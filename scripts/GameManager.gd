@@ -10,7 +10,6 @@ extends Node
 
 
 # TIMERS
-@onready var shooting_interval = $shootingInterval # use a timer to get the enemies to shoot
 @onready var ufo_timer = $ufoTimer # spawn every 25 seconds
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
@@ -43,13 +42,15 @@ var shooting = false # check if we are currently 'shooting'
 
 # ufo
 const UFO_SPAWN_TIME: int = 23
-const UFO = preload("res://scenes/ufo.tscn")
+
 
 
 ###################################################################
 @onready var shield_collisions: Node = %ShieldCollisions
 @onready var start_timer: Timer = $startTimer # time to wait before setting running to true
-@onready var tile_map = $"../TileMap" 
+@onready var shooting_interval = $shootingInterval # use a timer to get the enemies to shoot
+@onready var tile_map: TileMap = $"../world/TileMap"
+
 
 
 @export var running: bool = false # false until we spawn all the enemies
@@ -68,20 +69,19 @@ var hidden_coord: Vector2i = Vector2i(1000, 1000)
 
 @onready var score_label = $"../text/score" # to update the player score
 @onready var lives_label: Label = $"../text/livesLabel"
-
 @onready var game_over_label: Label = $"../text/gameOverLabel"
 
-
-
 @onready var text: Node = $"../text" # for the gradual draawing function
+@onready var ufo: Area2D = $"../ufo/UFO"
+
+@onready var life_1: Sprite2D = $"../images/life1"
+@onready var life_2: Sprite2D = $"../images/life2"
+
 
 
 
 # TODO speed up the game
-# TODO change the player sprite
-# TODO update death screen, make it gradual
 # TODO change the score so that it is always getting from the global scope
-# TODO update the high score on a gameover
 
 # when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -94,7 +94,7 @@ func _ready() -> void:
 	
 	'''
 	
-	score_label.text = format_score(GlobleVars.score)
+	score_label.text = text.format_score(GlobleVars.score)
 	
 	const number_of_enemies_per_row: int = 11
 	const spawn_interval: float = 0.05
@@ -127,6 +127,7 @@ func _ready() -> void:
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
+	ufo.position = hidden_coord
 	
 
 	
@@ -203,13 +204,21 @@ func _process(delta):
 	if running:
 		if shooting_interval.is_stopped():
 			shooting_interval.start(randf_range(MINTIME, MAXTIME))
+			
+		
+		# TODO the lives images
+		if GlobleVars.lives == 2:
+			life_1.visible = false
+		if GlobleVars.lives == 1:
+			life_2.visible = false
+	
 		
 		
 		
-		## UFO
-		#var ufo = get_node_or_null('ufo') # check if there is a ufo in the scene tree
-		#if ufo:
-			#ufo.move_ufo()
+	
+		#ufo 
+		if ufo.visible:
+			ufo.move_ufo()
 		
 		if not gameLoopSet:
 			gameLoopSet = true
@@ -217,7 +226,7 @@ func _process(delta):
 		
 	
 		# SCORE
-		score_label.text = format_score(GlobleVars.score)
+		score_label.text = text.format_score(GlobleVars.score)
 		lives_label.text = str(GlobleVars.lives)
 		
 		
@@ -280,14 +289,13 @@ func _on_ufo_timer_timeout():
 	var left_or_right = randi_range(0, 1)
 	var direction = directions[left_or_right]
 	
-	var ufo = UFO.instantiate()
+	
+	ufo.visible = true
 	ufo.position.x = 256 * direction
 	ufo.position.y = -242
 	ufo.direction = direction
-	ufo.name = "ufo"
-	add_child(ufo)
 	
-	var tmp = get_child(3)
+	
 
 
 func _on_game_loop_timeout() -> void:
@@ -335,15 +343,7 @@ func _on_death_timer_timeout():
 	deathTimerStarted = false
 	running = true
 
-func format_score(score) -> String:
-	if score == 0:
-		return "0000"
-	elif score < 100:
-		return "00" + str(score)
-	elif score < 1000:
-		return "0" + str(score)
-	else:
-		return str(score)
+
 	
 
 

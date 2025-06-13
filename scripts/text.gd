@@ -12,4 +12,14 @@ func draw_text(text: String, label: Label) -> void:
 		if !c == " ":
 			await get_tree().create_timer(speed).timeout # wait one second
 		label.text = label.text + c
-	
+
+
+func format_score(score) -> String:
+	if score == 0:
+		return "0000"
+	elif score < 100:
+		return "00" + str(score)
+	elif score < 1000:
+		return "0" + str(score)
+	else:
+		return str(score)

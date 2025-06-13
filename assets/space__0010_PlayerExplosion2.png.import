@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ch4kkh6v0fojj"
-path="res://.godot/imported/space_invaders.png-878b0c586df72d0c8d475ea2b9a82a20.ctex"
+uid="uid://cp7u6gs2gyugt"
+path="res://.godot/imported/space__0010_PlayerExplosion2.png-fda04883f7d299eda6e8a5b4cd8ad95a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/space_invaders.png"
-dest_files=["res://.godot/imported/space_invaders.png-878b0c586df72d0c8d475ea2b9a82a20.ctex"]
+source_file="res://assets/space__0010_PlayerExplosion2.png"
+dest_files=["res://.godot/imported/space__0010_PlayerExplosion2.png-fda04883f7d299eda6e8a5b4cd8ad95a.ctex"]
 
 [params]
 

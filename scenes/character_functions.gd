@@ -62,15 +62,38 @@ func remove_tile_explosion(coord: Vector2i, tile_map: TileMap):
 
 func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, delta: float, projectile_array: Array, direction: int) -> void:
 	
-	# TODO remove the animation for the bottom collisions
-	# TODO player collisions update lives
-	# TODO remove only a single tile with bottom tile
+	# TODO add collisions between the two projectiles
+	# TODO update the explosion animations
 	# TODO prvent getting two explosions for the collisions
 	
 	var hidden_coord: Vector2i = Vector2i(1000, 1000) # somewhere far off screen
 
 	var distance = Vector2(0, direction * game_manager.PROJECTILESPEED * delta) # calculate the distance in which we want to move the projecile
 	var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
+	
+	
+	# first checking to see if off screen
+	if projectile.position.y < -256:
+		# want to add the explosion animation too
+		explosion.visible = true
+		explosion.position = projectile.position
+		explosion_timer.start(explosion_duration)
+		
+		projectile_array.erase(projectile)
+		projectile.position = hidden_coord
+		return 
+	
+	elif projectile.position.y > 352:
+		var map_coord = tile_map.local_to_map(Vector2i(projectile.position.x, 352))
+		tile_map.erase_cell(0, map_coord)
+		
+		projectile_array.erase(projectile)
+		projectile.position = hidden_coord
+		
+		
+		
+		return 
+		
 	
 	if collision:
 		var collision_coord = Vector2i(collision.get_position())
@@ -125,7 +148,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		
 		
 		
-		if collision.get_collider().name == "player":
+		elif collision.get_collider().name == "player":
 			
 			projectile_array.erase(projectile)
 			projectile.position = hidden_coord
@@ -133,14 +156,6 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 			return 
 			
 	
-	if projectile.position.y < -256 or projectile.position.y > 352:
-		# want to add the explosion animatio too
-		explosion.visible = true
-		explosion.position = projectile.position
-		explosion_timer.start(explosion_duration)
-		
-		projectile_array.erase(projectile)
-		projectile.position = hidden_coord
 		
 	
 		

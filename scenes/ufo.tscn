@@ -1,32 +1,33 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1y56gnujqct4"]
 
 [ext_resource type="Script" uid="uid://dc7gxbyck7js0" path="res://scripts/ufo.gd" id="1_5romk"]
-[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="1_groeq"]
+[ext_resource type="Texture2D" uid="uid://0weth3for2yf" path="res://assets/space__0007_UFO.png" id="2_xf4xf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fbnjo"]
 size = Vector2(32, 16)
 
 [node name="UFO" type="Area2D"]
 scale = Vector2(2, 2)
-collision_mask = 2
+collision_layer = 0
 script = ExtResource("1_5romk")
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-20, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
-texture = ExtResource("1_groeq")
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.64, 0.8)
+texture = ExtResource("2_xf4xf")
 region_enabled = true
-region_rect = Rect2(47, 3, 18, 10)
+region_rect = Rect2(0, 0, 48, 21)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_fbnjo")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="interval" type="Timer" parent="."]
+one_shot = true
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(20, 0)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

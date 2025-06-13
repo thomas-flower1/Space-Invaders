@@ -1,7 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://ckwdoce02ay54"]
 
 [ext_resource type="Script" uid="uid://cgk4xeyfmk6g4" path="res://scripts/enemy.gd" id="1_s28jn"]
-[ext_resource type="Texture2D" uid="uid://d0dansf1d8igi" path="res://assets/SpaceInvaders.png" id="2_x30h7"]
 [ext_resource type="Texture2D" uid="uid://cxlkdcs36wfan" path="res://assets/space__0000_A1.png" id="3_5uy6h"]
 [ext_resource type="Texture2D" uid="uid://dejg04aayfn5e" path="res://assets/space__0001_A2.png" id="4_c4w8v"]
 [ext_resource type="Texture2D" uid="uid://bmetnd6vuft8e" path="res://assets/space__0002_B1.png" id="5_xwavj"]
@@ -9,12 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://b3kmb0k4l0um0" path="res://assets/space__0004_C1.png" id="7_md484"]
 [ext_resource type="Texture2D" uid="uid://gylpdhs6snwi" path="res://assets/space__0005_C2.png" id="8_ipns3"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o6xl0"]
+load_path = "res://.godot/imported/SpaceInvaders.png-846c3a9eec596a44e94cf607b1673147.ctex"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
-atlas = ExtResource("2_x30h7")
+atlas = SubResource("CompressedTexture2D_o6xl0")
 region = Rect2(32, 48, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o6xl0"]
-atlas = ExtResource("2_x30h7")
+atlas = SubResource("CompressedTexture2D_o6xl0")
 region = Rect2(32, 64, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_md0e3"]
@@ -48,11 +50,11 @@ atlas = ExtResource("8_ipns3")
 region = Rect2(0, 0, 24, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gcumw"]
-atlas = ExtResource("2_x30h7")
+atlas = SubResource("CompressedTexture2D_o6xl0")
 region = Rect2(32, 48, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_otu2o"]
-atlas = ExtResource("2_x30h7")
+atlas = SubResource("CompressedTexture2D_o6xl0")
 region = Rect2(32, 64, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tah42"]
