@@ -26,8 +26,9 @@ extends Node2D
 const speed: float = 0.1
 # called when enters the scene tree for the first time
 func _ready():
+	print('ok')
 	
-	if GlobleVars.isTitleScreen:
+	if GlobleVars.is_title_screen:
 		
 		var delay: float = 0
 		
@@ -76,12 +77,13 @@ func time_to_wait(text: String, wait_time: float=speed) -> float:
 	return len(text) * wait_time + wait_time
 	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	if Input.is_action_pressed("shoot"): # will only swap scenes if the space bar is pressed
+
+	
+	
+func _input(event):
+	if event.is_action_pressed("shoot"):
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 	
-
 
 
 func draw_text(text: String, label: Label) -> void:

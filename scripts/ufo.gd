@@ -62,6 +62,7 @@ func _on_body_entered(projectile: CharacterBody2D):
 	#ufo_score_timer.start(1)
 	
 	# TODO add explosion on death
+	position = game_manager.hidden_coord
 
 	
 	

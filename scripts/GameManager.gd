@@ -67,9 +67,12 @@ const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
 var direction = 1 # for the movement, whether moving left or right
 var hidden_coord: Vector2i = Vector2i(1000, 1000)
 
+
 @onready var score_label = $"../text/score" # to update the player score
 @onready var lives_label: Label = $"../text/livesLabel"
 @onready var game_over_label: Label = $"../text/gameOverLabel"
+@onready var high_score: Label = $"../text/highScore"
+
 
 @onready var text: Node = $"../text" # for the gradual draawing function
 @onready var ufo: Area2D = $"../ufo/UFO"
@@ -95,6 +98,10 @@ func _ready() -> void:
 	'''
 	
 	score_label.text = text.format_score(GlobleVars.score)
+	high_score.text  = text.format_score(GlobleVars.high_score)
+	GlobleVars.is_title_screen = false # will never go back to the title screen
+	
+	
 	
 	const number_of_enemies_per_row: int = 11
 	const spawn_interval: float = 0.05
@@ -136,9 +143,6 @@ func _ready() -> void:
 	for i in range(number_of_enemy_projectiles):
 		var enemy_projectile = PROJECTILE.instantiate();
 		enemy_projectile.position = Vector2i(1000, 1000) # move this into a global varaible
-		#enemy_projectile.set_collision_layer_value(1, false)
-		#enemy_projectile.set_collision_layer_value(2, true)
-		#enemy_projectile.set_collision_mask_value(1, true)
 		add_sibling(enemy_projectile)
 	
 func create_enemy_row(start_x: int, start_y: int, enemy_type: int, score: int, spawn_interval: float, number_per_row: int=11) -> void:
@@ -188,17 +192,28 @@ func _process(delta):
 		if not game_over_label.visible:
 			text.draw_text("GAME OVER", game_over_label)
 		game_over_label.visible = true
+		
+		player_projectiles.clear()
+		enemy_projectiles.clear()
+		
+		# check and update the high score
+		if GlobleVars.score > GlobleVars.high_score:
+			GlobleVars.high_score = GlobleVars.score
+		
 	
 		
 		
-		# TODO wait for input to change the scene
-		#get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
-		## TODO add gameover and swap back to title screen
-		## TODO pause running again
-		
+		if Input.is_action_just_pressed("ui_accept"):
+			GlobleVars.lives = 3 # reset lives, 
+			game_over_label.visible = false
+			GlobleVars.score = 0 # reset the score
+			get_tree().change_scene_to_file("res://scenes/title_screen.tscn")
+			
+	
+
 	
 	
-	if enemies.is_empty():
+	elif enemies.is_empty():
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
 	if running:
