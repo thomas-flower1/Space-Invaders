@@ -20,3 +20,4 @@ Some feature of this project include:
 
 
 ### Gameplay Preview
+![Space Invaders Gameplay - Made with Clipchamp](https://github.com/user-attachments/assets/0a71c457-a763-4747-b2a5-f636970358f8)
