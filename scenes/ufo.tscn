@@ -30,4 +30,7 @@ one_shot = true
 [node name="RayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(20, 0)
 
+[node name="scoreDisplayTimer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="scoreDisplayTimer" to="." method="_on_score_display_timer_timeout"]

@@ -1,9 +1,9 @@
 extends Area2D
 
 @onready var game_manager: GameManager = get_parent()
-@onready var ray_cast_right = $rayCastRight
-@onready var ray_cast_left = $rayCastLeft
-@onready var animation = $animation
+@onready var ray_cast_right: RayCast2D = $rayCastRight
+@onready var ray_cast_left: RayCast2D = $rayCastLeft
+@onready var animation: AnimatedSprite2D = $animation
 @onready var ray_cast_bottom: RayCast2D = $rayCastBottom
 @onready var death_delay: Timer = $deathDelay
 @onready var explosion: AnimatedSprite2D = $explosion
@@ -34,7 +34,7 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	
 	'''
 	
-	# need to remove the projectile
+	
 	projectile.position = game_manager.hidden_coord
 	
 	animation.visible = false

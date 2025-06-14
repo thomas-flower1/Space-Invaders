@@ -26,8 +26,6 @@ extends Node2D
 const speed: float = 0.1
 # called when enters the scene tree for the first time
 func _ready():
-	print('ok')
-	
 	if GlobleVars.is_title_screen:
 		
 		var delay: float = 0

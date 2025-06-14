@@ -7,19 +7,19 @@ extends Area2D
 @onready var interval_timer: Timer = $interval
 
 @onready var score_label: Label = $"score label"
-@onready var display_score: Timer = $"display score"
-@onready var ufo_score: Label = $"../../text/ufo score" 
+@onready var ufo_score: Label = $"../../text/ufoScore" 
 
-@onready var ufo_score_timer: Timer = $"../ufo score timer"
+@onready var score_display_timer: Timer = $scoreDisplayTimer
 
 
 
 const interval: float = 0.3
 const move_distance: int = 20
+const score_display_duration: float = 1
 
-var waiting: bool = false
 
 var direction: int = 1
+
 
 
 func generate_score() -> int:
@@ -40,35 +40,21 @@ func move_ufo() -> void:
 		if ray_cast_left.is_colliding() or ray_cast_right.is_colliding():
 			visible = false
 			position = game_manager.hidden_coord
-	
-	
-		
-		
-		
-
-
-
 
 
 func _on_body_entered(projectile: CharacterBody2D):
 	
 	var score = generate_score()
+	GlobleVars.score += score
+	projectile.position = game_manager.hidden_coord
 	
-	# creating and displaying the score on death
 	ufo_score.visible = true
 	ufo_score.position = position
 	ufo_score.text = str(score)
 	
-	#ufo_score_timer.start(1)
-	
-	# TODO add explosion on death
-	position = game_manager.hidden_coord
+	position = game_manager.ufo_hidden_coord # hiding the ufo again
+	score_display_timer.start(2)
 
-	
-	
-	
-		#
-	#queue_free() # removing the ufo
-	#projectile.queue_free() # removing from the scene tree
-	#player.projectile = null # removing from the array
-	#game_manager.score += score
+
+func _on_score_display_timer_timeout() -> void:
+	ufo_score.visible = false

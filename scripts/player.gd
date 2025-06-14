@@ -46,9 +46,8 @@ func _on_area_2d_body_entered(p: CharacterBody2D) -> void:
 	
 	if not invincible:
 		invincible = true
-		invincible_timer.start(1)
+		invincible_timer.start(3)
 		p.position = Vector2i(1000, 1000)
-		game_manager.enemy_projectiles.erase(p)
 		GlobleVars.lives -= 1
 		
 		# TODO pause the game, also need to update the image
@@ -60,6 +59,9 @@ func _on_area_2d_body_entered(p: CharacterBody2D) -> void:
 		
 		# TODO do a timer to reset these
 		death_reset.start(death_time)
+		
+		for projectile in game_manager.enemy_projectiles:
+			projectile.position = game_manager.hidden_coord
 		
 	
 func _on_invincible_timer_timeout() -> void:

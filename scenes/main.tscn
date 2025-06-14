@@ -82,8 +82,6 @@ one_shot = true
 [node name="DeathTimer" type="Timer" parent="GameManager"]
 one_shot = true
 
-[node name="ufo score timer" type="Timer" parent="GameManager"]
-
 [node name="startTimer" type="Timer" parent="GameManager"]
 one_shot = true
 
@@ -205,8 +203,9 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_xtdec")
 theme_override_font_sizes/font_size = 32
 
-[node name="ufo score" type="Label" parent="text"]
+[node name="ufoScore" type="Label" parent="text"]
 visible = false
+modulate = Color(1, 0, 0, 1)
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("3_xtdec")
@@ -232,10 +231,9 @@ frame_progress = 0.819312
 visible = false
 
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
-[connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_shooting_interval_timeout"]
+[connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameManager/ufoTimer" to="GameManager" method="_on_ufo_timer_timeout"]
 [connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
-[connection signal="timeout" from="GameManager/ufo score timer" to="GameManager" method="_on_ufo_score_timer_timeout"]
 [connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
 [connection signal="timeout" from="ShieldCollisions/explosionTimer" to="ShieldCollisions" method="_on_explosion_timer_timeout"]

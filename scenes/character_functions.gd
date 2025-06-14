@@ -60,7 +60,7 @@ func remove_tile_explosion(coord: Vector2i, tile_map: TileMap):
 		return true
 
 
-func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, delta: float, projectile_array: Array, direction: int) -> void:
+func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, delta: float, projectile_array: Array, direction: int, speed: int) -> void:
 	
 	# TODO add collisions between the two projectiles
 	# TODO update the explosion animations
@@ -68,7 +68,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 	
 	var hidden_coord: Vector2i = Vector2i(1000, 1000) # somewhere far off screen
 
-	var distance = Vector2(0, direction * game_manager.PROJECTILESPEED * delta) # calculate the distance in which we want to move the projecile
+	var distance = Vector2(0, direction * speed * delta) # calculate the distance in which we want to move the projecile
 	var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
 	
 	

@@ -2,40 +2,25 @@ class_name GameManager
 
 extends Node
 
-
-# LABELS
-
-@onready var ufo_score: Label = $"../text/ufo score"
-
-
-
-# TIMERS
 @onready var ufo_timer = $ufoTimer # spawn every 25 seconds
 @onready var gameLoopTimer = $GameLoop
 @onready var deathTimer = $DeathTimer
-@onready var ufo_score_timer: Timer = $"ufo score timer"
 @onready var enemy_row_timer: Timer = $enemyRowTimer
 
 
 
-@onready var explosion: AnimatedSprite2D = $explosion # explosion animation for the enemy
 
 
 @onready var player = $"../player/player"
 
 
 
-# SCENES
 
 # main game
 var gameLoopSet = false
 
 const deathTimoutDuration: int = 5 # the time the game freezes when the player dies
 var deathTimerStarted: bool = false
-
-#shooting
-
-var shooting = false # check if we are currently 'shooting'
 
 
 
@@ -63,10 +48,12 @@ var enemies: Array = []
 const MINTIME: float = 0.6# the mintime for an enemy to shoot
 const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
 const PROJECTILESPEED: int = 400
+const PLAYERPROJECILESPEED: int = 800
 
 
 var direction = 1 # for the movement, whether moving left or right
 var hidden_coord: Vector2i = Vector2i(1000, 1000)
+var ufo_hidden_coord: Vector2i = Vector2i(-1000, -1000)
 
 
 @onready var score_label = $"../text/score" # to update the player score
@@ -85,8 +72,10 @@ var hidden_coord: Vector2i = Vector2i(1000, 1000)
 
 
 
+
 # TODO speed up the game
-# TODO change the score so that it is always getting from the global scope
+# TODO seperate the timers
+# TODO refactor and hide some code
 
 # when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -137,7 +126,7 @@ func _ready() -> void:
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
-	ufo.position = hidden_coord
+	ufo.position = ufo_hidden_coord
 	
 
 	
@@ -180,14 +169,14 @@ func _physics_process(delta: float) -> void:
 	if !player_projectiles.is_empty():
 		for projectile in player_projectiles:
 			if Vector2i(projectile.position) != hidden_coord:
-				shield_collisions.handle_shield_collision(projectile, tile_map, delta, player_projectiles, -1)
+				shield_collisions.handle_shield_collision(projectile, tile_map, delta, player_projectiles, -1, PLAYERPROJECILESPEED)
 	
 	# do the same for the enemy projectiles
 	
 	if !enemy_projectiles.is_empty() and running:
 		for projectile in enemy_projectiles:
 			if Vector2i(projectile.position) != hidden_coord:
-				shield_collisions.handle_shield_collision(projectile, tile_map, delta, enemy_projectiles, 1)
+				shield_collisions.handle_shield_collision(projectile, tile_map, delta, enemy_projectiles, 1, PROJECTILESPEED)
 			
 	
 # main game loop
@@ -201,9 +190,7 @@ func _process(delta):
 			text.draw_text("GAME OVER", game_over_label)
 		game_over_label.visible = true
 		
-		player_projectiles.clear()
-		enemy_projectiles.clear()
-		
+
 		# check and update the high score
 		if GlobleVars.score > GlobleVars.high_score:
 			GlobleVars.high_score = GlobleVars.score
@@ -225,6 +212,7 @@ func _process(delta):
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
 	if running:
+		print(GlobleVars.score)
 		if shooting_interval.is_stopped():
 			shooting_interval.start(randf_range(MINTIME, MAXTIME))
 		
@@ -280,13 +268,7 @@ func activate_shooting() -> void:
 	var projectile = get_random_projectile()
 	projectile.position = random_enemy.position
 	
-	#for projectile in get_parent().get_children():
-		#if projectile is CharacterBody2D and not enemy_projectiles.has(projectile):
-			#
-			#projectile.position = Vector2i(random_enemy.position)
-			#enemy_projectiles.append(projectile)
-	
-	
+
 	
 
 func get_random_enemy() -> Area2D:
@@ -378,11 +360,6 @@ func _on_death_timer_timeout():
 	running = true
 
 
-	
-
-
-func _on_ufo_score_timer_timeout() -> void:
-	ufo_score.visible = false
 
 
 func _on_shooting_interval_timeout() -> void:     
