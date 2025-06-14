@@ -1,23 +1,24 @@
-### Recreated the classic 1978 arcade classic using Godot
+## Space Invaders
 
-Personal project to learn gdscript and the godot game engine
+Recreated the classic 1978 arcade classic using Godot
+Personal project to learn GDscript and the Godot game engine
+The project includes a high score tracker, projectile collisions, deteriorating shield, a secret ufo, title screen / game over screen and more!
+The game is available to play in the browser through my [itch.io page](https://thomas-flower1.itch.io/space-invaders-clone).
 
-Some feature of this project include:
+<br>
 
-- Keeping track of your personal high score
-- A title screen and gameover screen
-- Endless gameplay like the original game
-- Animated sprites that shoot at random intervals
-- Shields that slowly deteriorate over time
-- A secret UFO that appears randomly
-- And much more!
+Creating the game gave me alot of experience with the game engine. Not only was I able to learn GDscript but also learned about collisions, scenes, the scene tree (and how to navigate it) user input, basic raycasting, and game logic.
 
-  <br>
-  
-### Title Screen Preview:
-
-![Space invaders title screen - Made with Clipchamp](https://github.com/user-attachments/assets/aebe244b-d2e4-45c6-ab69-97498abb9f62)
+## Preview
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/aebe244b-d2e4-45c6-ab69-97498abb9f62" width="200" />
+  <img src="https://github.com/user-attachments/assets/0a71c457-a763-4747-b2a5-f636970358f8" width="200" /> 
+  <img src="https://github.com/user-attachments/assets/6108c61d-7f5d-4481-88d5-e693b18be7c4" width="200" /> 
+</p>
 
 
-### Gameplay Preview
-![Space Invaders Gameplay - Made with Clipchamp](https://github.com/user-attachments/assets/0a71c457-a763-4747-b2a5-f636970358f8)
+
+## Credits
+- [space-invaders](https://github.com/brunotnasc/space-invaders) by [Bruno Nascimento(https://github.com/brunotnasc)
+  - Used for audio and sprite assets
+
