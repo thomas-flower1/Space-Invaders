@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1y56gnujqct4"]
+[gd_scene load_steps=5 format=3 uid="uid://c1y56gnujqct4"]
 
 [ext_resource type="Script" uid="uid://dc7gxbyck7js0" path="res://scripts/ufo.gd" id="1_5romk"]
 [ext_resource type="Texture2D" uid="uid://0weth3for2yf" path="res://assets/space__0007_UFO.png" id="2_xf4xf"]
+[ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_gp6nc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fbnjo"]
 size = Vector2(32, 16)
@@ -14,14 +15,14 @@ script = ExtResource("1_5romk")
 [node name="RayCastLeft" type="RayCast2D" parent="."]
 target_position = Vector2(-20, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="ufo" type="Sprite2D" parent="."]
 modulate = Color(1, 0, 0, 1)
 scale = Vector2(0.64, 0.8)
 texture = ExtResource("2_xf4xf")
 region_enabled = true
 region_rect = Rect2(0, 0, 48, 21)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="collisions" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_fbnjo")
 
 [node name="interval" type="Timer" parent="."]
@@ -31,6 +32,16 @@ one_shot = true
 target_position = Vector2(20, 0)
 
 [node name="scoreDisplayTimer" type="Timer" parent="."]
+
+[node name="ufoScore" type="Label" parent="."]
+visible = false
+modulate = Color(1, 0, 0, 1)
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 20.0
+offset_bottom = 11.0
+theme_override_fonts/font = ExtResource("3_gp6nc")
+theme_override_font_sizes/font_size = 16
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="scoreDisplayTimer" to="." method="_on_score_display_timer_timeout"]

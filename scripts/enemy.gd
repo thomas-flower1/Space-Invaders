@@ -7,6 +7,7 @@ extends Area2D
 @onready var ray_cast_bottom: RayCast2D = $rayCastBottom
 @onready var death_delay: Timer = $deathDelay
 @onready var explosion: AnimatedSprite2D = $explosion
+@onready var death_sound: AudioStreamPlayer2D = $"../../audio/death_sound"
 
 
 var type: int = 1 # the type of enemy it is
@@ -31,11 +32,12 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	'''
 	When a player projectile enters the enemy body
 	Play an animation, delete the projecile, wait, then delete the enemy
-	
+	 
 	'''
 	
 	
 	projectile.position = game_manager.hidden_coord
+	death_sound.play()
 	
 	animation.visible = false
 	explosion.visible = true

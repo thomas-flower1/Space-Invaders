@@ -45,6 +45,9 @@ const ENEMY = preload("res://scenes/enemy.tscn") # loading the 'enemy' scene
 var player_projectiles: Array = []
 var enemy_projectiles: Array = [] 
 var enemies: Array = []
+var invader_speed: float = 1
+var invader_distance: int = 10
+
 const MINTIME: float = 0.6# the mintime for an enemy to shoot
 const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
 const PROJECTILESPEED: int = 400
@@ -122,7 +125,6 @@ func _ready() -> void:
 	
 	create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
 
-	
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
 	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
@@ -212,12 +214,17 @@ func _process(delta):
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
 	if running:
-		print(GlobleVars.score)
 		if shooting_interval.is_stopped():
 			shooting_interval.start(randf_range(MINTIME, MAXTIME))
 		
-
-	
+		if enemies.size() == 1:
+			invader_speed = 0.1
+			invader_distance = 40
+		elif enemies.size() <= 10:
+			invader_speed = 0.5
+			invader_distance = 20
+		
+			
 		
 		# TODO the lives images
 		if GlobleVars.lives == 2:
@@ -229,13 +236,15 @@ func _process(delta):
 		
 		
 	
-		#ufo 
-		if ufo.visible:
+		#ufo
+		
+		
+		if ufo.ufo_on_screen:
 			ufo.move_ufo()
 		
 		if not gameLoopSet:
 			gameLoopSet = true
-			gameLoopTimer.start(1) # this actually means that it is called each second, need to change the one shot
+			gameLoopTimer.start(invader_speed) # this actually means that it is called each second, need to change the one shot
 		
 	
 		# SCORE
@@ -266,7 +275,8 @@ func activate_shooting() -> void:
 	
 	# need to get valid projectile
 	var projectile = get_random_projectile()
-	projectile.position = random_enemy.position
+	if projectile:
+		projectile.position = random_enemy.position
 	
 
 	
@@ -305,7 +315,7 @@ func _on_ufo_timer_timeout():
 	var left_or_right = randi_range(0, 1)
 	var direction = directions[left_or_right]
 	
-	
+	ufo.ufo_on_screen = true  
 	ufo.visible = true
 	ufo.position.x = 256 * direction
 	ufo.position.y = -242
@@ -343,7 +353,7 @@ func _on_game_loop_timeout() -> void:
 	else:
 		for enemy in enemies:
 			if is_instance_valid(enemy):
-				enemy.position.x += 10 * direction
+				enemy.position.x += invader_distance * direction
 				var left = enemy.get_node('rayCastLeft')
 				var right = enemy.get_node('rayCastRight')
 				left.enabled = true
