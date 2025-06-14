@@ -79,7 +79,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		explosion.position = projectile.position
 		explosion_timer.start(explosion_duration)
 		
-		projectile_array.erase(projectile)
+	
 		projectile.position = hidden_coord
 		return 
 	
@@ -87,7 +87,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		var map_coord = tile_map.local_to_map(Vector2i(projectile.position.x, 352))
 		tile_map.erase_cell(0, map_coord)
 		
-		projectile_array.erase(projectile)
+	
 		projectile.position = hidden_coord
 		
 		
@@ -112,45 +112,43 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 
 		if valid_tile(top_middle, tile_map):
 			remove_tile_explosion(top_middle, tile_map)
-			projectile_array.erase(projectile)
+			
 			projectile.position = hidden_coord
 			return
 			
 		elif valid_tile(top_left, tile_map):
 			remove_tile_explosion(top_left, tile_map)
-			projectile_array.erase(projectile)
+			
 			projectile.position = hidden_coord
 			return 
 		
 		elif valid_tile(top_right, tile_map):
 			remove_tile_explosion(top_right, tile_map)
-			projectile_array.erase(projectile)
+		
 			projectile.position = hidden_coord
 			return 
 		
 		elif valid_tile(bottom_left, tile_map):
 			remove_tile_explosion(bottom_left, tile_map)
-			projectile_array.erase(projectile)
+			
 			projectile.position = hidden_coord
 			return 
 		
 		elif valid_tile(bottom_middle, tile_map):
 			remove_tile_explosion(bottom_middle, tile_map)
-			projectile_array.erase(projectile)
 			projectile.position = hidden_coord
 			return 
 		
 		elif valid_tile(bottom_right, tile_map):
 			remove_tile_explosion(bottom_right, tile_map)
-			projectile_array.erase(projectile)
+			
 			projectile.position = hidden_coord
 			return
 		
 		
 		
 		elif collision.get_collider().name == "player":
-			
-			projectile_array.erase(projectile)
+
 			projectile.position = hidden_coord
 		
 			return 

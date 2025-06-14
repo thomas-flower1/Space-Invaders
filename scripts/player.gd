@@ -35,9 +35,9 @@ func _input(event)-> void:
 	Adds the node under player node
 	'''
 
-	if event.is_action_pressed("shoot") and game_manager.running and game_manager.player_projectiles.is_empty(): # if we have no projectile on the screen
+	if event.is_action_pressed("shoot") and game_manager.running and Vector2i(projectile.position) == game_manager.hidden_coord: # if we have no projectile on the screen
 		projectile.position = position 
-		game_manager.player_projectiles.append(projectile)
+		
 		
 		
 

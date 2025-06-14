@@ -34,7 +34,6 @@ const deathTimoutDuration: int = 5 # the time the game freezes when the player d
 var deathTimerStarted: bool = false
 
 #shooting
-const PROJECTILESPEED: int = 950
 
 var shooting = false # check if we are currently 'shooting'
 
@@ -63,6 +62,8 @@ var enemy_projectiles: Array = []
 var enemies: Array = []
 const MINTIME: float = 0.6# the mintime for an enemy to shoot
 const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
+const PROJECTILESPEED: int = 400
+
 
 var direction = 1 # for the movement, whether moving left or right
 var hidden_coord: Vector2i = Vector2i(1000, 1000)
@@ -80,6 +81,7 @@ var hidden_coord: Vector2i = Vector2i(1000, 1000)
 @onready var life_1: Sprite2D = $"../images/life1"
 @onready var life_2: Sprite2D = $"../images/life2"
 
+@onready var player_projectile: CharacterBody2D = $"../player/projectile"
 
 
 
@@ -100,6 +102,7 @@ func _ready() -> void:
 	score_label.text = text.format_score(GlobleVars.score)
 	high_score.text  = text.format_score(GlobleVars.high_score)
 	GlobleVars.is_title_screen = false # will never go back to the title screen
+	player_projectiles.append(player_projectile)
 	
 	
 	
@@ -139,11 +142,13 @@ func _ready() -> void:
 
 	
 	
-	var number_of_enemy_projectiles: int = 5
+	var number_of_enemy_projectiles: int = 12
 	for i in range(number_of_enemy_projectiles):
 		var enemy_projectile = PROJECTILE.instantiate();
+		enemy_projectile.id = i % 3 # the 3 if how many animations I have
 		enemy_projectile.position = Vector2i(1000, 1000) # move this into a global varaible
 		add_sibling(enemy_projectile)
+		enemy_projectiles.append(enemy_projectile)
 	
 func create_enemy_row(start_x: int, start_y: int, enemy_type: int, score: int, spawn_interval: float, number_per_row: int=11) -> void:
 	for i in number_per_row: 
@@ -174,12 +179,15 @@ func _physics_process(delta: float) -> void:
 	# for the player projeciles
 	if !player_projectiles.is_empty():
 		for projectile in player_projectiles:
-			shield_collisions.handle_shield_collision(projectile, tile_map, delta, player_projectiles, -1)
+			if Vector2i(projectile.position) != hidden_coord:
+				shield_collisions.handle_shield_collision(projectile, tile_map, delta, player_projectiles, -1)
 	
 	# do the same for the enemy projectiles
+	
 	if !enemy_projectiles.is_empty() and running:
 		for projectile in enemy_projectiles:
-			shield_collisions.handle_shield_collision(projectile, tile_map, delta, enemy_projectiles, 1)
+			if Vector2i(projectile.position) != hidden_coord:
+				shield_collisions.handle_shield_collision(projectile, tile_map, delta, enemy_projectiles, 1)
 			
 	
 # main game loop
@@ -219,7 +227,9 @@ func _process(delta):
 	if running:
 		if shooting_interval.is_stopped():
 			shooting_interval.start(randf_range(MINTIME, MAXTIME))
-			
+		
+
+	
 		
 		# TODO the lives images
 		if GlobleVars.lives == 2:
@@ -267,10 +277,14 @@ func activate_shooting() -> void:
 	var random_time = randi_range(MINTIME, MAXTIME) 
 	
 	# need to get valid projectile
-	for projectile in get_parent().get_children():
-		if projectile is CharacterBody2D and not enemy_projectiles.has(projectile):
-			projectile.position = Vector2i(random_enemy.position)
-			enemy_projectiles.append(projectile)
+	var projectile = get_random_projectile()
+	projectile.position = random_enemy.position
+	
+	#for projectile in get_parent().get_children():
+		#if projectile is CharacterBody2D and not enemy_projectiles.has(projectile):
+			#
+			#projectile.position = Vector2i(random_enemy.position)
+			#enemy_projectiles.append(projectile)
 	
 	
 	
@@ -286,7 +300,12 @@ func get_random_enemy() -> Area2D:
 	
 
 
-
+func get_random_projectile():
+	enemy_projectiles.shuffle()
+	for projectile in enemy_projectiles:
+		if Vector2i(projectile.position) == hidden_coord:
+			return projectile
+		
 
 
 

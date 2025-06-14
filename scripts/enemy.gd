@@ -35,7 +35,6 @@ func _on_body_entered(projectile: CharacterBody2D) -> void:
 	'''
 	
 	# need to remove the projectile
-	game_manager.player_projectiles.erase(projectile)
 	projectile.position = game_manager.hidden_coord
 	
 	animation.visible = false
