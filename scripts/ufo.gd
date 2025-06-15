@@ -60,13 +60,13 @@ func _on_score_display_timer_timeout() -> void:
 	
 # spawning ufo
 func start_ufo_spawn_timer():
-	const time_to_spawn: int = 10
+	const time_to_spawn: int = 23
 	spawn_timer.start(time_to_spawn)
 	
 
 func _on_spawn_timer_timeout() -> void:
 	var directions = [1, -1].pick_random()
-	position.x = 256 * directions
+	position.x = 256 * directions 
 	position.y = -242
 	direction = directions
 	

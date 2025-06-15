@@ -7,7 +7,6 @@ var id: int = 3
 
 # when enters the scene tree for the first time
 func _ready():
-	
 	match id:
 		0: 
 			animation.play("A")

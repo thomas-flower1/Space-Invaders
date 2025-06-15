@@ -1,13 +1,19 @@
 extends Area2D
 
-@onready var game_manager: GameManager = get_parent()
+@onready var game_manager: GameManager = get_node("/root/Main/GameManager")
+@onready var enemies: Node = get_parent()
+@onready var death_sound: AudioStreamPlayer2D = $death_sound
+
+
 @onready var ray_cast_right: RayCast2D = $rayCastRight
 @onready var ray_cast_left: RayCast2D = $rayCastLeft
-@onready var animation: AnimatedSprite2D = $animation
 @onready var ray_cast_bottom: RayCast2D = $rayCastBottom
+
+@onready var animation: AnimatedSprite2D = $animation
+
 @onready var death_delay: Timer = $deathDelay
 @onready var explosion: AnimatedSprite2D = $explosion
-@onready var death_sound: AudioStreamPlayer2D = $"../../audio/death_sound"
+
 
 
 var type: int = 1 # the type of enemy it is
@@ -29,12 +35,6 @@ func _ready():
 	
 
 func _on_body_entered(projectile: CharacterBody2D) -> void:
-	'''
-	When a player projectile enters the enemy body
-	Play an animation, delete the projecile, wait, then delete the enemy
-	 
-	'''
-	
 	
 	projectile.position = game_manager.hidden_coord
 	death_sound.play()
@@ -58,6 +58,7 @@ func colliding_bottom() -> bool:
 
 
 func _on_death_delay_timeout() -> void:
-	game_manager.enemies.erase(self)
+	
+	enemies.enemies.erase(self)
 	queue_free()
 	

@@ -63,10 +63,7 @@ func remove_tile_explosion(coord: Vector2i, tile_map: TileMap):
 func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, delta: float, projectile_array: Array, direction: int, speed: int) -> void:
 	
 	# TODO add collisions between the two projectiles
-	# TODO update the explosion animations
-	# TODO prvent getting two explosions for the collisions
-	
-	var hidden_coord: Vector2i = Vector2i(1000, 1000) # somewhere far off screen
+
 
 	var distance = Vector2(0, direction * speed * delta) # calculate the distance in which we want to move the projecile
 	var collision = projectile.move_and_collide(distance) # move the projectile this disance and check for collisions
@@ -80,7 +77,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		explosion_timer.start(explosion_duration)
 		
 	
-		projectile.position = hidden_coord
+		projectile.position = game_manager.hidden_coord
 		return 
 	
 	elif projectile.position.y > 352:
@@ -88,7 +85,7 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		tile_map.erase_cell(0, map_coord)
 		
 	
-		projectile.position = hidden_coord
+		projectile.position = game_manager.hidden_coord
 		
 		
 		
@@ -113,43 +110,43 @@ func handle_shield_collision(projectile: CharacterBody2D, tile_map: TileMap, del
 		if valid_tile(top_middle, tile_map):
 			remove_tile_explosion(top_middle, tile_map)
 			
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return
 			
 		elif valid_tile(top_left, tile_map):
 			remove_tile_explosion(top_left, tile_map)
 			
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return 
 		
 		elif valid_tile(top_right, tile_map):
 			remove_tile_explosion(top_right, tile_map)
 		
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return 
 		
 		elif valid_tile(bottom_left, tile_map):
 			remove_tile_explosion(bottom_left, tile_map)
 			
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return 
 		
 		elif valid_tile(bottom_middle, tile_map):
 			remove_tile_explosion(bottom_middle, tile_map)
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return 
 		
 		elif valid_tile(bottom_right, tile_map):
 			remove_tile_explosion(bottom_right, tile_map)
 			
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 			return
 		
 		
 		
 		elif collision.get_collider().name == "player":
 
-			projectile.position = hidden_coord
+			projectile.position = game_manager.hidden_coord
 		
 			return 
 			

@@ -1,15 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://ccx8w1sbpd7l2"]
+[gd_scene load_steps=22 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
 [ext_resource type="Script" uid="uid://dvrm7wbf8fbs7" path="res://scripts/GameManager.gd" id="2_rmiqm"]
+[ext_resource type="Script" uid="uid://b736d3a5kl5py" path="res://scripts/projectiles.gd" id="2_ya4ey"]
+[ext_resource type="Script" uid="uid://b8xrf6k4k72y0" path="res://scripts/enemies.gd" id="3_eb6dy"]
 [ext_resource type="FontFile" uid="uid://baay0seq1jvpb" path="res://assets/PixelOperator8.ttf" id="3_xtdec"]
 [ext_resource type="Texture2D" uid="uid://4pwxa7rpk0ak" path="res://assets/space__0006_Player.png" id="4_85g3d"]
 [ext_resource type="Script" uid="uid://ogaelv1j6x7o" path="res://scripts/score.gd" id="4_cu8dy"]
 [ext_resource type="PackedScene" uid="uid://cumndowafrghy" path="res://scenes/projectile.tscn" id="4_o6xl0"]
 [ext_resource type="Script" uid="uid://w062ip4ubuur" path="res://scripts/text.gd" id="5_tipki"]
-[ext_resource type="Script" uid="uid://6g65cahkv176" path="res://scenes/character_functions.gd" id="6_tefeu"]
+[ext_resource type="Script" uid="uid://6g65cahkv176" path="res://scripts/shieldCollisions.gd" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c1y56gnujqct4" path="res://scenes/ufo.tscn" id="8_tipki"]
-[ext_resource type="AudioStream" uid="uid://bsxe46u3ydqbf" path="res://assets/invaderkilled.wav" id="11_ya4ey"]
 
 [sub_resource type="GDScript" id="GDScript_tbgi4"]
 script/source = "extends Node2D
@@ -73,15 +74,20 @@ script = SubResource("GDScript_tbgi4")
 unique_name_in_owner = true
 script = ExtResource("2_rmiqm")
 
-[node name="GameLoop" type="Timer" parent="GameManager"]
+[node name="projectiles" type="Node" parent="."]
+script = ExtResource("2_ya4ey")
+
+[node name="enemies" type="Node" parent="."]
+script = ExtResource("3_eb6dy")
+
+[node name="timers" type="Node" parent="."]
+
+[node name="startTimer" type="Timer" parent="timers"]
 one_shot = true
 
-[node name="shootingInterval" type="Timer" parent="GameManager"]
+[node name="gameLoopTimer" type="Timer" parent="timers"]
 
-[node name="startTimer" type="Timer" parent="GameManager"]
-one_shot = true
-
-[node name="enemyRowTimer" type="Timer" parent="GameManager"]
+[node name="shootingTimer" type="Timer" parent="timers"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -201,19 +207,11 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_xtdec")
 theme_override_font_sizes/font_size = 32
 
-[node name="ufoScore" type="Label" parent="text"]
-visible = false
-modulate = Color(1, 0, 0, 1)
-offset_right = 40.0
-offset_bottom = 23.0
-theme_override_fonts/font = ExtResource("3_xtdec")
-theme_override_font_sizes/font_size = 16
-
-[node name="ShieldCollisions" type="Node" parent="."]
+[node name="shieldCollisions" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_tefeu")
 
-[node name="explosion" type="AnimatedSprite2D" parent="ShieldCollisions"]
+[node name="explosion" type="AnimatedSprite2D" parent="shieldCollisions"]
 visible = false
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tipki")
@@ -221,20 +219,14 @@ animation = &"explosion"
 autoplay = "explosion"
 frame_progress = 0.819312
 
-[node name="explosionTimer" type="Timer" parent="ShieldCollisions"]
+[node name="explosionTimer" type="Timer" parent="shieldCollisions"]
 
 [node name="ufo" type="Node" parent="."]
 
 [node name="UFO" parent="ufo" instance=ExtResource("8_tipki")]
 position = Vector2(-1000, -1000)
 
-[node name="audio" type="Node" parent="."]
-
-[node name="death_sound" type="AudioStreamPlayer2D" parent="audio"]
-stream = ExtResource("11_ya4ey")
-
-[connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
-[connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_shooting_interval_timeout"]
-[connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
-[connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
-[connection signal="timeout" from="ShieldCollisions/explosionTimer" to="ShieldCollisions" method="_on_explosion_timer_timeout"]
+[connection signal="timeout" from="timers/startTimer" to="GameManager" method="_on_start_timer_timeout"]
+[connection signal="timeout" from="timers/gameLoopTimer" to="enemies" method="_on_game_loop_timer_timeout"]
+[connection signal="timeout" from="timers/shootingTimer" to="GameManager" method="_on_shooting_interval_timeout"]
+[connection signal="timeout" from="shieldCollisions/explosionTimer" to="shieldCollisions" method="_on_explosion_timer_timeout"]

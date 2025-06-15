@@ -3,6 +3,8 @@ extends CharacterBody2D
 
 @onready var game_manager = %GameManager
 @onready var projectile: CharacterBody2D = $"../projectile"
+@onready var projectiles: Node = $"../../projectiles"
+
 
 # Sprites
 @onready var player_explosion_animation: AnimatedSprite2D = $playerExplosionAnimation
@@ -66,7 +68,7 @@ func _on_area_2d_body_entered(enemy_projectile: CharacterBody2D) -> void:
 		
 		death_reset_timer.start(death_time)
 		
-		for projectile in game_manager.enemy_projectiles: # reset all the projectiles
+		for projectile in projectiles.enemy_projectiles: # reset all the projectiles
 			projectile.position = game_manager.hidden_coord
 		
 	
@@ -75,7 +77,6 @@ func _on_invincible_timer_timeout() -> void:
 
 
 func _on_death_reset_timer_timeout() -> void:
-	print('ok')
 	
 	# game resumes after a few seconds
 	game_manager.running = true
