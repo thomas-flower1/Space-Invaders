@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ccx8w1sbpd7l2"]
+[gd_scene load_steps=21 format=3 uid="uid://ccx8w1sbpd7l2"]
 
 [ext_resource type="PackedScene" uid="uid://bovssfjl8iwvm" path="res://scenes/player.tscn" id="1_65wcy"]
 [ext_resource type="Script" uid="uid://dvrm7wbf8fbs7" path="res://scripts/GameManager.gd" id="2_rmiqm"]
@@ -9,9 +9,7 @@
 [ext_resource type="Script" uid="uid://w062ip4ubuur" path="res://scripts/text.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://6g65cahkv176" path="res://scenes/character_functions.gd" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c1y56gnujqct4" path="res://scenes/ufo.tscn" id="8_tipki"]
-[ext_resource type="AudioStream" uid="uid://b8h2tpiawfnbp" path="res://assets/shoot.wav" id="10_choun"]
 [ext_resource type="AudioStream" uid="uid://bsxe46u3ydqbf" path="res://assets/invaderkilled.wav" id="11_ya4ey"]
-[ext_resource type="AudioStream" uid="uid://yhhiddp3n4bn" path="res://assets/explosion.wav" id="12_eb6dy"]
 
 [sub_resource type="GDScript" id="GDScript_tbgi4"]
 script/source = "extends Node2D
@@ -79,9 +77,6 @@ script = ExtResource("2_rmiqm")
 one_shot = true
 
 [node name="shootingInterval" type="Timer" parent="GameManager"]
-
-[node name="DeathTimer" type="Timer" parent="GameManager"]
-one_shot = true
 
 [node name="startTimer" type="Timer" parent="GameManager"]
 one_shot = true
@@ -235,18 +230,11 @@ position = Vector2(-1000, -1000)
 
 [node name="audio" type="Node" parent="."]
 
-[node name="shoot_sound" type="AudioStreamPlayer2D" parent="audio"]
-stream = ExtResource("10_choun")
-
 [node name="death_sound" type="AudioStreamPlayer2D" parent="audio"]
 stream = ExtResource("11_ya4ey")
-
-[node name="player_death_sound" type="AudioStreamPlayer2D" parent="audio"]
-stream = ExtResource("12_eb6dy")
 
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
 [connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_shooting_interval_timeout"]
 [connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
-[connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
 [connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
 [connection signal="timeout" from="ShieldCollisions/explosionTimer" to="ShieldCollisions" method="_on_explosion_timer_timeout"]

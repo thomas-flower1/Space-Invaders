@@ -12,9 +12,6 @@ scale = Vector2(2, 2)
 collision_layer = 0
 script = ExtResource("1_5romk")
 
-[node name="RayCastLeft" type="RayCast2D" parent="."]
-target_position = Vector2(-20, 0)
-
 [node name="ufoSprite" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 0, 0, 1)
@@ -23,17 +20,14 @@ texture = ExtResource("2_xf4xf")
 region_enabled = true
 region_rect = Rect2(0, 0, 48, 21)
 
-[node name="collisions" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_fbnjo")
-
-[node name="interval" type="Timer" parent="."]
-one_shot = true
-
-[node name="RayCastRight" type="RayCast2D" parent="."]
+[node name="rayCastRight" type="RayCast2D" parent="."]
 target_position = Vector2(20, 0)
 
-[node name="scoreDisplayTimer" type="Timer" parent="."]
-one_shot = true
+[node name="rayCastLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-20, 0)
+
+[node name="collisions" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fbnjo")
 
 [node name="ufoScore" type="Label" parent="."]
 visible = false
@@ -45,8 +39,16 @@ offset_bottom = 11.0
 theme_override_fonts/font = ExtResource("3_gp6nc")
 theme_override_font_sizes/font_size = 16
 
-[node name="spawnTimer" type="Timer" parent="."]
+[node name="timer" type="Node" parent="."]
+
+[node name="spawnTimer" type="Timer" parent="timer"]
+
+[node name="intervalTimer" type="Timer" parent="timer"]
+one_shot = true
+
+[node name="scoreDisplayTimer" type="Timer" parent="timer"]
+one_shot = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="timeout" from="scoreDisplayTimer" to="." method="_on_score_display_timer_timeout"]
-[connection signal="timeout" from="spawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="timer/spawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="timer/scoreDisplayTimer" to="." method="_on_score_display_timer_timeout"]

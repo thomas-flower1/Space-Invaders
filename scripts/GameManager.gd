@@ -2,9 +2,7 @@ class_name GameManager
 
 extends Node
 
-@onready var ufo_timer = $ufoTimer # spawn every 25 seconds
 @onready var gameLoopTimer = $GameLoop
-@onready var deathTimer = $DeathTimer
 @onready var enemy_row_timer: Timer = $enemyRowTimer
 
 
@@ -237,7 +235,7 @@ func _process(delta):
 		#ufo
 		
 		
-		if ufo.get_node("ufoSprite").visible and ufo.get_node("interval").is_stopped():
+		if ufo.get_node("ufoSprite").visible and ufo.get_node("timer/intervalTimer").is_stopped():
 			ufo.move_ufo()
 		
 			
@@ -254,12 +252,7 @@ func _process(delta):
 		
 		
 		
-	# if the game is not running
-	else:
-		if not deathTimerStarted:
-			deathTimerStarted = true
-			deathTimer.start(deathTimoutDuration)
-	
+
 	
 
 
@@ -355,9 +348,6 @@ func move_down():
 		if is_instance_valid(enemy):
 			enemy.position.y += 10
 
-func _on_death_timer_timeout():
-	deathTimerStarted = false
-	running = true
 
 
 
