@@ -21,4 +21,3 @@ Creating the game gave me alot of experience with the game engine. Not only was 
 ## Credits
 - [space-invaders](https://github.com/brunotnasc/space-invaders) by [Bruno Nascimento(https://github.com/brunotnasc)
   - Used for audio and sprite assets
-

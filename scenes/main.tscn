@@ -80,8 +80,6 @@ one_shot = true
 
 [node name="shootingInterval" type="Timer" parent="GameManager"]
 
-[node name="ufoTimer" type="Timer" parent="GameManager"]
-
 [node name="DeathTimer" type="Timer" parent="GameManager"]
 one_shot = true
 
@@ -233,7 +231,7 @@ frame_progress = 0.819312
 [node name="ufo" type="Node" parent="."]
 
 [node name="UFO" parent="ufo" instance=ExtResource("8_tipki")]
-visible = false
+position = Vector2(-1000, -1000)
 
 [node name="audio" type="Node" parent="."]
 
@@ -249,7 +247,6 @@ stream = ExtResource("12_eb6dy")
 [connection signal="timeout" from="GameManager/GameLoop" to="GameManager" method="_on_game_loop_timeout"]
 [connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_shooting_interval_timeout"]
 [connection signal="timeout" from="GameManager/shootingInterval" to="GameManager" method="_on_timer_timeout"]
-[connection signal="timeout" from="GameManager/ufoTimer" to="GameManager" method="_on_ufo_timer_timeout"]
 [connection signal="timeout" from="GameManager/DeathTimer" to="GameManager" method="_on_death_timer_timeout"]
 [connection signal="timeout" from="GameManager/startTimer" to="GameManager" method="_on_start_timer_timeout"]
 [connection signal="timeout" from="ShieldCollisions/explosionTimer" to="ShieldCollisions" method="_on_explosion_timer_timeout"]

@@ -25,7 +25,6 @@ var deathTimerStarted: bool = false
 
 
 # ufo
-const UFO_SPAWN_TIME: int = 23
 
 
 
@@ -48,6 +47,7 @@ var enemies: Array = []
 var invader_speed: float = 1
 var invader_distance: int = 10
 
+
 const MINTIME: float = 0.6# the mintime for an enemy to shoot
 const MAXTIME: float = 0.9 # the maxtime for an enemy to shoot
 const PROJECTILESPEED: int = 400
@@ -57,6 +57,7 @@ const PLAYERPROJECILESPEED: int = 800
 var direction = 1 # for the movement, whether moving left or right
 var hidden_coord: Vector2i = Vector2i(1000, 1000)
 var ufo_hidden_coord: Vector2i = Vector2i(-1000, -1000)
+
 
 
 @onready var score_label = $"../text/score" # to update the player score
@@ -76,7 +77,7 @@ var ufo_hidden_coord: Vector2i = Vector2i(-1000, -1000)
 
 
 
-# TODO speed up the game
+#
 # TODO seperate the timers
 # TODO refactor and hide some code
 
@@ -109,28 +110,25 @@ func _ready() -> void:
 	time_to_wait += number_of_enemies_per_row * spawn_interval 
 	await get_tree().create_timer(time_to_wait).timeout
 	
-	create_enemy_row(xpos, ypos + 50, 2, 20, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
-	await get_tree().create_timer(time_to_wait).timeout
-
-	
-	create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
-	await get_tree().create_timer(time_to_wait).timeout
-
-	
-	create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
-	await get_tree().create_timer(time_to_wait).timeout
-	
-	create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
+	#create_enemy_row(xpos, ypos + 50, 2, 20, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+#
+	#
+	#create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+#
+	#
+	#create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+	#
+	#create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
 
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
-	ufo_timer.start(UFO_SPAWN_TIME) # starting the timer before spawning the ufo
-	ufo.position = ufo_hidden_coord
-	
-
+	ufo.start_ufo_spawn_timer()
 	
 	
 	var number_of_enemy_projectiles: int = 12
@@ -239,8 +237,10 @@ func _process(delta):
 		#ufo
 		
 		
-		if ufo.ufo_on_screen:
+		if ufo.get_node("ufoSprite").visible and ufo.get_node("interval").is_stopped():
 			ufo.move_ufo()
+		
+			
 		
 		if not gameLoopSet:
 			gameLoopSet = true
@@ -310,17 +310,7 @@ func get_random_projectile():
 
 
 
-func _on_ufo_timer_timeout():
-	var directions = [1, -1]
-	var left_or_right = randi_range(0, 1)
-	var direction = directions[left_or_right]
-	
-	ufo.ufo_on_screen = true  
-	ufo.visible = true
-	ufo.position.x = 256 * direction
-	ufo.position.y = -242
-	ufo.direction = direction
-	
+
 	
 
 
