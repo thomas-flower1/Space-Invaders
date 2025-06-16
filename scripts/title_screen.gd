@@ -21,6 +21,7 @@ extends Node2D
 @onready var push: Label = $newGame/Push
 @onready var player_button: Label = $newGame/playerButton
 
+@onready var high_score: Label = $highScore
 
 
 const speed: float = 0.1
@@ -65,6 +66,8 @@ func _ready():
 	else: # if it is a new game screen
 		push.visible = true
 		player_button.visible = true
+		high_score.text = GlobleVars.high_score_str
+		print(high_score.text)
 		
 	
 	

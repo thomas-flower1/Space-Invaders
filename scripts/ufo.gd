@@ -31,19 +31,22 @@ func move_ufo() -> void:
 
 
 func _on_body_entered(projectile: CharacterBody2D):
-	var score = generate_score()
-	
-	GlobleVars.score += score
-	ufo_score.text = str(score)
-	ufo_score.visible = true
-	score_display_timer.start(score_display_duration)
-			
-	ufo_sprite.visible = false
-	projectile.position = game_manager.hidden_coord
-	
-	
-	# need to resart the spwan timer
-	start_ufo_spawn_timer()
+		
+	if not collisions.disabled:
+		collisions.disabled = true
+		var score = generate_score()
+
+		GlobleVars.score += score
+		ufo_score.text = str(score)
+		ufo_score.visible = true
+		score_display_timer.start(score_display_duration)
+				
+		ufo_sprite.visible = false
+		projectile.position = game_manager.hidden_coord
+
+
+		# need to resart the spwan timer
+		start_ufo_spawn_timer()
 
 
 func generate_score() -> int:
@@ -71,4 +74,4 @@ func _on_spawn_timer_timeout() -> void:
 	direction = directions
 	
 	ufo_sprite.visible = true
-	
+	collisions.disabled = false 

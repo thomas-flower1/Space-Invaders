@@ -72,21 +72,21 @@ func _ready() -> void:
 	time_to_wait += number_of_enemies_per_row * spawn_interval 
 	await get_tree().create_timer(time_to_wait).timeout
 	
-	enemies.create_enemy_row(xpos, ypos + 50, 2, 20, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
-	await get_tree().create_timer(time_to_wait).timeout
-
-	
-	enemies.create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
-	await get_tree().create_timer(time_to_wait).timeout
-
-	
-	enemies.create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
-	time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
-	await get_tree().create_timer(time_to_wait).timeout
-	
-	enemies.create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
+	#enemies.create_enemy_row(xpos, ypos + 50, 2, 20, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval - 0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+#
+	#
+	#enemies.create_enemy_row(xpos, ypos + 100, 2, 20, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+#
+	#
+	#enemies.create_enemy_row(xpos, ypos + 150, 3, 10, spawn_interval)
+	#time_to_wait += number_of_enemies_per_row * spawn_interval -0.5
+	#await get_tree().create_timer(time_to_wait).timeout
+	#
+	#enemies.create_enemy_row(xpos, ypos + 200, 3, 10, spawn_interval)
 
 	
 	start_timer.start(time_to_wait + 1)  # on timeout will start the game
@@ -124,6 +124,7 @@ func _physics_process(delta: float) -> void:
 # main game loop
 func _process(delta):
 	if enemies.enemies.is_empty(): # reloading the scene
+		
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 		
 	if running:
@@ -175,6 +176,8 @@ func _process(delta):
 		# check and update the high score
 		if GlobleVars.score > GlobleVars.high_score:
 			GlobleVars.high_score = GlobleVars.score
+		
+		GlobleVars.high_score_str = text.format_score(GlobleVars.high_score)
 		
 		if Input.is_action_just_pressed("shoot"):
 			GlobleVars.lives = 3 # reset lives, 
